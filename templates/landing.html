@@ -362,101 +362,6 @@
 
 
     /* ══════════════════════════════════════
-       TESTIMONIAL
-    ══════════════════════════════════════ */
-    .testimonial {
-      padding: var(--section-py) 0;
-      background: var(--ink);
-      overflow: hidden;
-      position: relative;
-    }
-    .testimonial::before {
-      content: '\201C';
-      position: absolute;
-      top: -2rem;
-      left: 3rem;
-      font-family: var(--font-head);
-      font-size: 20rem;
-      color: rgba(255,255,255,.03);
-      line-height: 1;
-      pointer-events: none;
-    }
-    .testimonial-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: center;
-    }
-    .testimonial-content blockquote {
-      font-family: var(--font-head);
-      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-      font-weight: 600;
-      line-height: 1.3;
-      color: var(--white);
-      letter-spacing: -.01em;
-      margin-bottom: 2rem;
-    }
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .testimonial-avatar {
-      width: 48px; height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255,255,255,.12);
-    }
-    .testimonial-author-info strong {
-      display: block;
-      font-size: .85rem;
-      font-weight: 500;
-      color: var(--white);
-    }
-    .testimonial-author-info span {
-      font-size: .75rem;
-      color: rgba(255,255,255,.4);
-    }
-
-    .testimonial-img-wrap {
-      position: relative;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      aspect-ratio: 4/3;
-    }
-    .testimonial-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(20%) brightness(.85);
-    }
-    .testimonial-img-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(13,27,42,.7) 0%, transparent 60%);
-    }
-    .testimonial-img-stat {
-      position: absolute;
-      bottom: 1.75rem;
-      left: 1.75rem;
-    }
-    .testimonial-img-stat strong {
-      font-family: var(--font-head);
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--white);
-      line-height: 1;
-    }
-    .testimonial-img-stat span {
-      display: block;
-      font-size: .72rem;
-      color: rgba(255,255,255,.6);
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      margin-top: .2rem;
-    }
-
-    /* ══════════════════════════════════════
        FLEET VISUAL
     ══════════════════════════════════════ */
     /* ══════════════════════════════════════
@@ -578,7 +483,6 @@
       .hero-right { height: 420px; }
       .hero-stats { grid-template-columns: repeat(2, 1fr); padding: 1.75rem 2.5rem; }
       .hero-stat:nth-child(2) { border-right: none; }
-      .testimonial-inner { grid-template-columns: 1fr; gap: 2.5rem; }
       .footer-top { grid-template-columns: 1fr 1fr; }
       .nav-links { display: none; }
       .nav-toggle { display: flex; }
@@ -822,47 +726,6 @@
           </svg>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ TESTIMONIAL ══ -->
-  <section class="testimonial" id="about" aria-labelledby="testimonial-title">
-    <div class="container">
-      <div class="testimonial-inner reveal">
-        <div class="testimonial-content">
-          <span class="tag" style="background:rgba(232,145,10,.15); color:var(--amber)"><span class="tag-dot"></span>Customer Story</span>
-          <br/><br/>
-          <blockquote id="testimonial-title">
-            "ASKFLEETS cut our unplanned breakdowns by 38% in the first quarter. The dashboard is the first thing my dispatchers open every morning."
-          </blockquote>
-          <div class="testimonial-author">
-            <img
-              class="testimonial-avatar"
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&q=80&auto=format&fit=crop&crop=face"
-              alt="Marcus Reid, VP of Fleet Operations at TransNorth"
-              loading="lazy"
-            />
-            <div class="testimonial-author-info">
-              <strong>Marcus Reid</strong>
-              <span>VP Fleet Operations — TransNorth Logistics</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-img-wrap">
-          <img
-            class="testimonial-img"
-            src="https://images.unsplash.com/photo-1462474819294-9daa3a9ec06f?w=1000&q=85&auto=format&fit=crop"
-            alt="Fleet of trucks at sunset on highway"
-            loading="lazy"
-          />
-          <div class="testimonial-img-overlay"></div>
-          <div class="testimonial-img-stat">
-            <strong>38%</strong>
-            <span>Fewer Breakdowns</span>
-          </div>
-        </div>
       </div>
     </div>
   </section>
