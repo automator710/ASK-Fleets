@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Access Denied — ASKFLEETS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f8f7f4;
+      color: #0f0f0f;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e4e1db;
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+    }
+    .icon {
+      width: 64px; height: 64px;
+      background: rgba(239,68,68,.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+    .code {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: #ef4444;
+      margin-bottom: .75rem;
+    }
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: .75rem;
+    }
+    p {
+      font-size: .88rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: #6b6b6b;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      display: inline-block;
+      background: #0f0f0f;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      padding: .75rem 1.75rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .btn:hover { background: #2a2a2a; }
+    .btn-ghost {
+      display: inline-block;
+      color: #6b6b6b;
+      font-family: 'Montserrat', sans-serif;
+      font-size: .82rem;
+      font-weight: 600;
+      padding: .75rem 1.75rem;
+      border-radius: 6px;
+      text-decoration: none;
+      border: 1px solid #e4e1db;
+      margin-left: .75rem;
+      transition: border-color .2s;
+    }
+    .btn-ghost:hover { border-color: #0f0f0f; color: #0f0f0f; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect x="6" y="12" width="16" height="13" rx="2.5" stroke="#ef4444" stroke-width="1.8"/>
+        <path d="M9 12V8.5a5 5 0 0 1 10 0V12" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="14" cy="18.5" r="2" fill="#ef4444"/>
+      </svg>
+    </div>
+    <p class="code">403 — Access Denied</p>
+    <h1>Dashboard Access Restricted</h1>
+    <p>This area is only accessible to fleet managers and administrators. Your account does not have the required permissions.</p>
+    <div>
+      <a href="{{ url_for('logout') }}" class="btn">Sign Out</a>
+      <a href="{{ url_for('landing') }}" class="btn-ghost">Go Home</a>
+    </div>
+  </div>
+</body>
+</html>

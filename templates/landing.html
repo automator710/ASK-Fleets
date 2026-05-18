@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASKFLEETS — Intelligent Fleet Management</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}" />
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --white:      #ffffff;
+      --off-white:  #f8f7f4;
+      --paper:      #f2f0ec;
+      --ink:        #0f0f0f;
+      --ink-soft:   #2a2a2a;
+      --muted:      #6b6b6b;
+      --border:     #e4e1db;
+      --amber:      #e8910a;
+      --amber-lt:   #fef3dc;
+      --amber-dark: #b36b00;
+      --navy:       #0d1b2a;
+      --radius-sm:  4px;
+      --radius-md:  10px;
+      --radius-lg:  20px;
+      --font-head:  'Montserrat', sans-serif;
+      --font-body:  'Montserrat', sans-serif;
+      --max-w:      1200px;
+      --section-py: 6rem;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Utility ── */
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: var(--font-head);
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      background: var(--amber-lt);
+      padding: .35rem .75rem;
+      border-radius: 100px;
+    }
+    .tag-dot {
+      width: 5px; height: 5px;
+      background: var(--amber);
+      border-radius: 50%;
+    }
+
+    /* ── Scroll animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ══════════════════════════════════════
+       NAV
+    ══════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      transition: background .3s, box-shadow .3s, backdrop-filter .3s;
+    }
+    .nav.scrolled {
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 1px 0 var(--border);
+    }
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+    }
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: var(--ink);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-logo-name {
+      font-family: var(--font-head);
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      color: var(--ink);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.25rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .btn-ghost {
+      font-family: var(--font-head);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      color: var(--ink);
+      padding: .5rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: border-color .2s, background .2s;
+    }
+    .btn-ghost:hover { border-color: var(--ink); background: var(--paper); }
+    .btn-primary {
+      font-family: var(--font-head);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      color: var(--white);
+      background: var(--ink);
+      padding: .5rem 1.25rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--ink);
+      transition: background .2s, transform .1s;
+    }
+    .btn-primary:hover { background: var(--ink-soft); }
+    .btn-primary:active { transform: scale(.98); }
+    .btn-amber {
+      font-family: var(--font-head);
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: var(--white);
+      background: var(--amber);
+      padding: .8rem 2rem;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: background .2s, transform .1s, box-shadow .2s;
+      box-shadow: 0 4px 24px rgba(232,145,10,.28);
+      display: inline-block;
+    }
+    .btn-amber:hover { background: var(--amber-dark); box-shadow: 0 6px 32px rgba(232,145,10,.4); }
+    .btn-amber:active { transform: scale(.98); }
+
+    /* Mobile nav toggle */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: .35rem;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: transform .25s, opacity .25s;
+    }
+
+    /* ══════════════════════════════════════
+       HERO
+    ══════════════════════════════════════ */
+    .hero {
+      padding-top: 68px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .hero-top {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .hero-left {
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 4rem 5rem 5rem;
+    }
+    .hero-eyebrow {
+      margin-bottom: 1.75rem;
+    }
+    .hero-headline {
+      font-family: var(--font-head);
+      font-size: clamp(2.8rem, 4.5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .hero-headline em {
+      font-style: normal;
+      color: var(--amber);
+    }
+    .hero-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .hero-link {
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      transition: color .2s;
+    }
+    .hero-link:hover { color: var(--ink); }
+    .hero-link svg { transition: transform .2s; }
+    .hero-link:hover svg { transform: translateX(3px); }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+      background: var(--paper);
+    }
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      filter: brightness(.95) saturate(.9);
+      transition: transform 8s ease;
+    }
+    .hero-right:hover .hero-img { transform: scale(1.03); }
+    .hero-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(255,255,255,.18) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    /* Floating badge on hero image */
+    .hero-badge {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 2rem;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .85rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,.08);
+    }
+    .hero-badge-icon {
+      width: 38px; height: 38px;
+      background: var(--amber-lt);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .hero-badge-text strong {
+      display: block;
+      font-family: var(--font-head);
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .hero-badge-text span {
+      font-size: .7rem;
+      color: var(--muted);
+    }
+
+    /* Hero bottom — stats strip */
+    .hero-stats {
+      background: var(--ink);
+      padding: 1.75rem 5rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .hero-stat {
+      padding: .5rem 2rem;
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-value {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -.01em;
+    }
+    .hero-stat-value span { color: var(--amber); }
+    .hero-stat-label {
+      font-size: .72rem;
+      font-weight: 400;
+      color: rgba(255,255,255,.4);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-top: .2rem;
+    }
+
+    /* ══════════════════════════════════════
+       LOGOS STRIP
+    ══════════════════════════════════════ */
+    .logos {
+      padding: 3.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .logos-label {
+      text-align: center;
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--border);
+      margin-bottom: 2rem;
+    }
+    .logos-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4rem;
+      flex-wrap: wrap;
+    }
+    .logo-item {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      color: var(--border);
+      text-transform: uppercase;
+      transition: color .3s;
+    }
+    .logo-item:hover { color: var(--muted); }
+
+    /* ══════════════════════════════════════
+       FEATURES
+    ══════════════════════════════════════ */
+    .features {
+      padding: var(--section-py) 0;
+      background: var(--white);
+    }
+    .section-header {
+      text-align: center;
+      max-width: 580px;
+      margin: 0 auto 4rem;
+    }
+    .section-header .tag { margin-bottom: 1.25rem; }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin-bottom: .85rem;
+    }
+    .section-desc {
+      font-size: .9rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .feature-card {
+      background: var(--white);
+      padding: 2.5rem 2rem;
+      transition: background .25s;
+      cursor: default;
+    }
+    .feature-card:hover { background: var(--off-white); }
+    .feature-card-icon {
+      width: 48px; height: 48px;
+      background: var(--paper);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      transition: background .25s;
+    }
+    .feature-card:hover .feature-card-icon { background: var(--amber-lt); }
+    .feature-card-title {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: .6rem;
+      letter-spacing: .01em;
+    }
+    .feature-card-desc {
+      font-size: .82rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    /* ══════════════════════════════════════
+       SHOWCASE
+    ══════════════════════════════════════ */
+    .showcase {
+      padding: var(--section-py) 0;
+      background: var(--off-white);
+    }
+    .showcase-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .showcase-img-wrap {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      box-shadow: 0 24px 80px rgba(0,0,0,.1);
+    }
+    .showcase-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 6s ease;
+    }
+    .showcase-img-wrap:hover .showcase-img { transform: scale(1.04); }
+    .showcase-img-badge {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-md);
+      padding: .85rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      border: 1px solid var(--border);
+    }
+    .badge-indicator {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 3px rgba(34,197,94,.2);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(34,197,94,.2); }
+      50%       { box-shadow: 0 0 0 7px rgba(34,197,94,.05); }
+    }
+    .badge-text {
+      font-size: .72rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .showcase-content .tag { margin-bottom: 1.25rem; }
+    .showcase-content h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .showcase-content p {
+      font-size: .9rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .85rem;
+      margin-bottom: 2.5rem;
+    }
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: .75rem;
+      font-size: .85rem;
+      font-weight: 400;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+    .check-icon {
+      width: 20px; height: 20px;
+      background: var(--amber-lt);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: .05rem;
+    }
+
+    /* Reverse layout variant */
+    .showcase-inner.reverse { direction: rtl; }
+    .showcase-inner.reverse > * { direction: ltr; }
+
+    /* ══════════════════════════════════════
+       TESTIMONIAL
+    ══════════════════════════════════════ */
+    .testimonial {
+      padding: var(--section-py) 0;
+      background: var(--ink);
+      overflow: hidden;
+      position: relative;
+    }
+    .testimonial::before {
+      content: '\201C';
+      position: absolute;
+      top: -2rem;
+      left: 3rem;
+      font-family: var(--font-head);
+      font-size: 20rem;
+      color: rgba(255,255,255,.03);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .testimonial-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .testimonial-content blockquote {
+      font-family: var(--font-head);
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--white);
+      letter-spacing: -.01em;
+      margin-bottom: 2rem;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .testimonial-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255,255,255,.12);
+    }
+    .testimonial-author-info strong {
+      display: block;
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--white);
+    }
+    .testimonial-author-info span {
+      font-size: .75rem;
+      color: rgba(255,255,255,.4);
+    }
+
+    .testimonial-img-wrap {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .testimonial-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(20%) brightness(.85);
+    }
+    .testimonial-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(13,27,42,.7) 0%, transparent 60%);
+    }
+    .testimonial-img-stat {
+      position: absolute;
+      bottom: 1.75rem;
+      left: 1.75rem;
+    }
+    .testimonial-img-stat strong {
+      font-family: var(--font-head);
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+    }
+    .testimonial-img-stat span {
+      display: block;
+      font-size: .72rem;
+      color: rgba(255,255,255,.6);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-top: .2rem;
+    }
+
+    /* ══════════════════════════════════════
+       FLEET VISUAL
+    ══════════════════════════════════════ */
+    .fleet-visual {
+      padding: var(--section-py) 0;
+      background: var(--white);
+    }
+    .fleet-visual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 280px 280px;
+      gap: 1rem;
+      margin-top: 3rem;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .fv-cell {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0;
+    }
+    .fv-cell:first-child {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+    }
+    .fv-cell img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 6s ease;
+    }
+    .fv-cell:hover img { transform: scale(1.06); }
+    .fv-cell-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.45) 0%, transparent 50%);
+    }
+    .fv-cell-label {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 1.25rem;
+      font-family: var(--font-head);
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.8);
+    }
+
+    /* ══════════════════════════════════════
+       PRICING / PLANS
+    ══════════════════════════════════════ */
+    .pricing {
+      padding: var(--section-py) 0;
+      background: var(--off-white);
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .plan-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.75rem;
+      position: relative;
+      transition: box-shadow .3s, transform .3s;
+    }
+    .plan-card:hover {
+      box-shadow: 0 20px 60px rgba(0,0,0,.08);
+      transform: translateY(-4px);
+    }
+    .plan-card.featured {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+    .plan-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--amber);
+      color: var(--white);
+      font-family: var(--font-head);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .3rem .85rem;
+      border-radius: 100px;
+    }
+    .plan-name {
+      font-family: var(--font-head);
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+    .plan-card.featured .plan-name { color: rgba(255,255,255,.45); }
+    .plan-price {
+      font-family: var(--font-head);
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: .35rem;
+    }
+    .plan-card.featured .plan-price { color: var(--white); }
+    .plan-price sup { font-size: 1.25rem; vertical-align: super; }
+    .plan-price-sub {
+      font-size: .75rem;
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+    }
+    .plan-card.featured .plan-price-sub { color: rgba(255,255,255,.35); }
+    .plan-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .plan-card.featured .plan-divider { background: rgba(255,255,255,.1); }
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .85rem;
+      margin-bottom: 2rem;
+    }
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      font-size: .82rem;
+      color: var(--ink-soft);
+    }
+    .plan-card.featured .plan-features li { color: rgba(255,255,255,.75); }
+    .plan-check {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+    }
+    .btn-plan {
+      width: 100%;
+      padding: .75rem;
+      font-family: var(--font-head);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all .2s;
+      text-align: center;
+      display: block;
+    }
+    .btn-plan-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+    }
+    .btn-plan-outline:hover { border-color: var(--ink); background: var(--paper); }
+    .btn-plan-amber {
+      background: var(--amber);
+      color: var(--white);
+      border: 1.5px solid var(--amber);
+      box-shadow: 0 4px 20px rgba(232,145,10,.3);
+    }
+    .btn-plan-amber:hover { background: var(--amber-dark); }
+
+    /* ══════════════════════════════════════
+       CTA BAND
+    ══════════════════════════════════════ */
+    .cta-band {
+      padding: 5rem 0;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .cta-band-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .cta-band-text h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      margin-bottom: .5rem;
+    }
+    .cta-band-text p {
+      font-size: .9rem;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .cta-band-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    .footer {
+      background: var(--ink);
+      padding: 4rem 0 2rem;
+      color: rgba(255,255,255,.5);
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      margin-bottom: 2rem;
+    }
+    .footer-brand .nav-logo-icon { background: rgba(255,255,255,.08); }
+    .footer-brand-name {
+      font-family: var(--font-head);
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      color: var(--white);
+      margin-top: .65rem;
+      margin-bottom: .5rem;
+    }
+    .footer-brand-desc {
+      font-size: .78rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,.38);
+    }
+    .footer-col-title {
+      font-family: var(--font-head);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.6);
+      margin-bottom: 1.25rem;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .7rem;
+    }
+    .footer-links a {
+      font-size: .8rem;
+      color: rgba(255,255,255,.35);
+      transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .footer-copy {
+      font-size: .75rem;
+      color: rgba(255,255,255,.25);
+    }
+    .footer-bottom-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-bottom-links a {
+      font-size: .75rem;
+      color: rgba(255,255,255,.25);
+      transition: color .2s;
+    }
+    .footer-bottom-links a:hover { color: rgba(255,255,255,.6); }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .hero-top { grid-template-columns: 1fr; }
+      .hero-left { padding: 4rem 2.5rem; }
+      .hero-right { height: 420px; }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); padding: 1.75rem 2.5rem; }
+      .hero-stat:nth-child(2) { border-right: none; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .showcase-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .showcase-inner.reverse { direction: ltr; }
+      .testimonial-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .fleet-visual-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 240px 240px; }
+      .fv-cell:first-child { grid-column: 1; grid-row: 1; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+    }
+
+    @media (max-width: 640px) {
+      :root { --section-py: 4rem; }
+      .hero-left { padding: 3rem 1.5rem; }
+      .hero-stats { grid-template-columns: 1fr 1fr; padding: 1.5rem; }
+      .logos-row { gap: 2rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .fleet-visual-grid { grid-template-columns: 1fr; grid-template-rows: repeat(5, 200px); }
+      .cta-band-inner { flex-direction: column; text-align: center; }
+      .cta-band-actions { justify-content: center; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .container { padding: 0 1.25rem; }
+    }
+
+    /* Mobile nav drawer */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: rgba(15,15,15,.96);
+      backdrop-filter: blur(16px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: rgba(255,255,255,.7);
+      transition: color .2s;
+    }
+    .mobile-nav a:hover { color: var(--white); }
+    .mobile-nav-close {
+      position: absolute;
+      top: 1.5rem; right: 1.75rem;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.5);
+      cursor: pointer;
+      font-size: 1.75rem;
+      line-height: 1;
+      padding: .25rem;
+      transition: color .2s;
+    }
+    .mobile-nav-close:hover { color: var(--white); }
+  </style>
+</head>
+<body>
+
+  <!-- ══ MOBILE NAV ══ -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" role="dialog" aria-modal="true">
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">&#x2715;</button>
+    <a href="{{ url_for('features') }}" onclick="closeMobileNav()">Features</a>
+    <a href="#platform" onclick="closeMobileNav()">Platform</a>
+    <a href="#pricing" onclick="closeMobileNav()">Pricing</a>
+    <a href="#" onclick="closeMobileNav()">About</a>
+    <a href="{{ url_for('login') }}" style="color:var(--amber)">Sign In &rarr;</a>
+  </nav>
+
+  <!-- ══ NAV ══ -->
+  <header class="nav" id="mainNav" role="banner">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="ASKFLEETS Home">
+        <div class="nav-logo-icon" aria-hidden="true">
+          <svg width="20" height="15" viewBox="0 0 20 15" fill="none">
+            <rect x="0" y="2" width="12" height="9" rx="1.5" fill="white"/>
+            <path d="M12 5h4.5a1.5 1.5 0 0 1 1.2.6L19.5 9V11h-7.5V5Z" fill="white"/>
+            <circle cx="4" cy="13" r="2" fill="#0f0f0f" stroke="white" stroke-width="1.2"/>
+            <circle cx="16" cy="13" r="2" fill="#0f0f0f" stroke="white" stroke-width="1.2"/>
+            <rect x="13" y="5.5" width="4" height="3" rx=".5" fill="#e8910a"/>
+          </svg>
+        </div>
+        <span class="nav-logo-name">ASKFLEETS</span>
+      </a>
+
+      <ul class="nav-links" aria-label="Main navigation">
+        <li><a href="{{ url_for('features') }}">Features</a></li>
+        <li><a href="#platform">Platform</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="{{ url_for('login') }}" class="btn-ghost">Sign In</a>
+        <a href="#pricing" class="btn-primary">Get Started</a>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow reveal">
+          <span class="tag"><span class="tag-dot"></span>Fleet Intelligence Platform</span>
+        </div>
+        <h1 class="hero-headline reveal" style="transition-delay:.08s">
+          Every truck.<br/>
+          Every route.<br/>
+          <em>Under control.</em>
+        </h1>
+        <p class="hero-desc reveal" style="transition-delay:.16s">
+          ASKFLEETS gives logistics operators real-time command over their entire fleet — from live GPS to predictive maintenance and DOT compliance — in one unified platform.
+        </p>
+        <div class="hero-actions reveal" style="transition-delay:.24s">
+          <a href="{{ url_for('login') }}" class="btn-amber">Access Dashboard</a>
+          <a href="#platform" class="hero-link">
+            See how it works
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-right" aria-hidden="true">
+        <!-- High-quality highway/logistics photo -->
+        <img
+          class="hero-img"
+          src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1400&q=90&auto=format&fit=crop"
+          alt="Semi trucks on highway at sunset"
+          loading="eager"
+        />
+        <div class="hero-img-overlay"></div>
+        <div class="hero-badge">
+          <div class="hero-badge-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="3" fill="#e8910a"/>
+              <circle cx="10" cy="10" r="7" stroke="#e8910a" stroke-width="1.2" opacity=".3"/>
+              <path d="M10 1v2M10 17v2M1 10h2M17 10h2" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="hero-badge-text">
+            <strong>Live GPS Active</strong>
+            <span>12,480 vehicles tracked now</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="hero-stats" aria-label="Key metrics">
+      <div class="hero-stat">
+        <div class="hero-stat-value">12<span>K+</span></div>
+        <div class="hero-stat-label">Active Vehicles</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">340<span>+</span></div>
+        <div class="hero-stat-label">Enterprise Clients</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">98<span>.4%</span></div>
+        <div class="hero-stat-label">Platform Uptime</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-value">22<span>%</span></div>
+        <div class="hero-stat-label">Avg. Fuel Savings</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ LOGOS ══ -->
+  <section class="logos" aria-label="Trusted by">
+    <div class="container">
+      <p class="logos-label">Trusted by industry leaders</p>
+      <div class="logos-row" aria-hidden="true">
+        <span class="logo-item">LogiCorp</span>
+        <span class="logo-item">TransNorth</span>
+        <span class="logo-item">FreightPro</span>
+        <span class="logo-item">RouteMax</span>
+        <span class="logo-item">Nexus Haul</span>
+        <span class="logo-item">CargoLink</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FEATURES ══ -->
+  <section class="features" id="features" aria-labelledby="features-title">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="tag"><span class="tag-dot"></span>Platform Capabilities</span>
+        <h2 class="section-title" id="features-title">Everything your fleet operation needs</h2>
+        <p class="section-desc">Built for dispatchers, fleet managers, and executives who need real answers — not just raw data.</p>
+      </div>
+
+      <div class="features-grid reveal">
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <circle cx="11" cy="11" r="3.5" stroke="#e8910a" stroke-width="1.6"/>
+              <circle cx="11" cy="11" r="8" stroke="#e8910a" stroke-width="1.2" opacity=".35"/>
+              <path d="M11 2v3M11 17v3M2 11h3M17 11h3" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Live GPS Tracking</h3>
+          <p class="feature-card-desc">Real-time vehicle positions updated every 10 seconds. Geofencing, trip replay, and ETA calculations built in.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M3 16L7 11 10 14 14 9 19 6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="2" y="2" width="18" height="18" rx="3" stroke="#e8910a" stroke-width="1.2" opacity=".3"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Predictive Maintenance</h3>
+          <p class="feature-card-desc">AI models that flag vehicles 14 days before breakdown probability spikes — cutting unplanned downtime by 40%.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="3" y="10" width="16" height="10" rx="2" stroke="#e8910a" stroke-width="1.5"/>
+              <path d="M7 10V7.5a4 4 0 0 1 8 0V10" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="11" cy="15" r="1.5" fill="#e8910a"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">DOT Compliance</h3>
+          <p class="feature-card-desc">Automated HOS logs, ELD integration, IFTA reporting, and one-click audit-ready documents.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M11 3C7.134 3 4 6.134 4 10c0 2.6 1.4 4.88 3.5 6.16L11 19l3.5-2.84C16.6 14.88 18 12.6 18 10c0-3.866-3.134-7-7-7Z" stroke="#e8910a" stroke-width="1.5"/>
+              <circle cx="11" cy="10" r="2.5" fill="#e8910a" opacity=".6"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Smart Route Optimisation</h3>
+          <p class="feature-card-desc">Dynamic re-routing around traffic, weather, and load constraints — saving up to 22% on fuel spend.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M3 7h16M3 11h12M3 15h8" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Driver Scorecards</h3>
+          <p class="feature-card-desc">Harshness, idling, speeding, and seatbelt metrics per driver — with automated coaching triggers.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="3" y="3" width="7.5" height="7.5" rx="1.5" stroke="#e8910a" stroke-width="1.5"/>
+              <rect x="11.5" y="3" width="7.5" height="7.5" rx="1.5" stroke="#e8910a" stroke-width="1.5" opacity=".5"/>
+              <rect x="3" y="11.5" width="7.5" height="7.5" rx="1.5" stroke="#e8910a" stroke-width="1.5" opacity=".5"/>
+              <rect x="11.5" y="11.5" width="7.5" height="7.5" rx="1.5" stroke="#e8910a" stroke-width="1.5" opacity=".25"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">API & Integrations</h3>
+          <p class="feature-card-desc">Connect to your TMS, ERP, or accounting stack via REST API, webhooks, and 50+ pre-built connectors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SHOWCASE 1 ══ -->
+  <section class="showcase" id="platform" aria-labelledby="showcase1-title">
+    <div class="container">
+      <div class="showcase-inner reveal">
+        <div class="showcase-img-wrap">
+          <img
+            class="showcase-img"
+            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=90&auto=format&fit=crop"
+            alt="Fleet dispatcher monitoring trucks on screen"
+            loading="lazy"
+          />
+          <div class="showcase-img-badge" aria-hidden="true">
+            <span class="badge-indicator"></span>
+            <span class="badge-text">Fleet Online — 1,240 active</span>
+          </div>
+        </div>
+
+        <div class="showcase-content">
+          <span class="tag"><span class="tag-dot"></span>Command Center</span>
+          <h2 id="showcase1-title">Your entire operation — one screen</h2>
+          <p>Dispatchers get a live map, exception queue, and driver comms in a single dashboard designed to reduce context switching and decision fatigue.</p>
+          <ul class="check-list" aria-label="Features">
+            <li>
+              <div class="check-icon" aria-hidden="true">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Drag-and-drop load assignment from the map
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Push notifications for exceptions — breakdowns, geofence exits, idle alerts
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              In-app driver messaging with read receipts
+            </li>
+          </ul>
+          <a href="{{ url_for('login') }}" class="btn-amber">Open Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SHOWCASE 2 ══ -->
+  <section class="showcase" style="background:var(--white)" aria-labelledby="showcase2-title">
+    <div class="container">
+      <div class="showcase-inner reverse reveal">
+        <div class="showcase-img-wrap">
+          <img
+            class="showcase-img"
+            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=90&auto=format&fit=crop"
+            alt="Mechanic performing truck maintenance inspection"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="showcase-content">
+          <span class="tag"><span class="tag-dot"></span>Maintenance Intelligence</span>
+          <h2 id="showcase2-title">Fix it before it breaks</h2>
+          <p>Our ML engine ingests OBD-II fault codes, mileage patterns, and service history to surface vehicles with rising failure probability weeks in advance.</p>
+          <ul class="check-list">
+            <li>
+              <div class="check-icon" aria-hidden="true">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Automated work order creation when thresholds breach
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Parts inventory sync with supplier catalogs
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              Full service history per VIN, exportable for resale
+            </li>
+          </ul>
+          <a href="{{ url_for('login') }}" class="btn-amber">Explore Maintenance</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FLEET VISUAL ══ -->
+  <section class="fleet-visual" aria-label="Fleet imagery">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="tag"><span class="tag-dot"></span>Built for Every Fleet Type</span>
+        <h2 class="section-title">LTL, FTL, last-mile — we cover it all</h2>
+        <p class="section-desc">Whether you run 10 vans or 10,000 semis, ASKFLEETS scales to your operation without hidden complexity.</p>
+      </div>
+
+      <div class="fleet-visual-grid reveal">
+        <div class="fv-cell">
+          <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=900&q=85&auto=format&fit=crop" alt="Semi truck fleet parked at depot" loading="lazy"/>
+          <div class="fv-cell-overlay"></div>
+          <span class="fv-cell-label">Long-Haul</span>
+        </div>
+        <div class="fv-cell">
+          <img src="https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=900&q=85&auto=format&fit=crop" alt="Delivery van in urban street" loading="lazy"/>
+          <div class="fv-cell-overlay"></div>
+          <span class="fv-cell-label">Last-Mile</span>
+        </div>
+        <div class="fv-cell">
+          <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&q=85&auto=format&fit=crop" alt="Construction trucks at worksite" loading="lazy"/>
+          <div class="fv-cell-overlay"></div>
+          <span class="fv-cell-label">Specialised</span>
+        </div>
+        <div class="fv-cell">
+          <img src="https://images.unsplash.com/photo-1532635241-17e820acc59f?w=900&q=85&auto=format&fit=crop" alt="Refrigerated truck food logistics" loading="lazy"/>
+          <div class="fv-cell-overlay"></div>
+          <span class="fv-cell-label">Cold Chain</span>
+        </div>
+        <div class="fv-cell">
+          <img src="https://images.unsplash.com/photo-1611095780519-a3a9c8329835?w=900&q=85&auto=format&fit=crop" alt="Freight cargo containers at port" loading="lazy"/>
+          <div class="fv-cell-overlay"></div>
+          <span class="fv-cell-label">Intermodal</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TESTIMONIAL ══ -->
+  <section class="testimonial" id="about" aria-labelledby="testimonial-title">
+    <div class="container">
+      <div class="testimonial-inner reveal">
+        <div class="testimonial-content">
+          <span class="tag" style="background:rgba(232,145,10,.15); color:var(--amber)"><span class="tag-dot"></span>Customer Story</span>
+          <br/><br/>
+          <blockquote id="testimonial-title">
+            "ASKFLEETS cut our unplanned breakdowns by 38% in the first quarter. The dashboard is the first thing my dispatchers open every morning."
+          </blockquote>
+          <div class="testimonial-author">
+            <img
+              class="testimonial-avatar"
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&q=80&auto=format&fit=crop&crop=face"
+              alt="Marcus Reid, VP of Fleet Operations at TransNorth"
+              loading="lazy"
+            />
+            <div class="testimonial-author-info">
+              <strong>Marcus Reid</strong>
+              <span>VP Fleet Operations — TransNorth Logistics</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-img-wrap">
+          <img
+            class="testimonial-img"
+            src="https://images.unsplash.com/photo-1462474819294-9daa3a9ec06f?w=1000&q=85&auto=format&fit=crop"
+            alt="Fleet of trucks at sunset on highway"
+            loading="lazy"
+          />
+          <div class="testimonial-img-overlay"></div>
+          <div class="testimonial-img-stat">
+            <strong>38%</strong>
+            <span>Fewer Breakdowns</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PRICING ══ -->
+  <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="tag"><span class="tag-dot"></span>Simple Pricing</span>
+        <h2 class="section-title" id="pricing-title">Plans that scale with your fleet</h2>
+        <p class="section-desc">All plans include onboarding, 24/7 support, and a 30-day money-back guarantee.</p>
+      </div>
+
+      <div class="pricing-grid reveal">
+        <!-- Starter -->
+        <div class="plan-card">
+          <p class="plan-name">Starter</p>
+          <div class="plan-price"><sup>$</sup>149</div>
+          <p class="plan-price-sub">per month · up to 25 vehicles</p>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Live GPS tracking
+            </li>
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Basic maintenance alerts
+            </li>
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Driver scorecards
+            </li>
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Email support
+            </li>
+          </ul>
+          <a href="{{ url_for('login') }}" class="btn-plan btn-plan-outline">Get Started</a>
+        </div>
+
+        <!-- Pro (featured) -->
+        <div class="plan-card featured">
+          <div class="plan-badge">Most Popular</div>
+          <p class="plan-name">Professional</p>
+          <div class="plan-price" style="color:#fff"><sup>$</sup>399</div>
+          <p class="plan-price-sub">per month · up to 150 vehicles</p>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Everything in Starter
+            </li>
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Predictive maintenance AI
+            </li>
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              DOT compliance & ELD
+            </li>
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Route optimisation
+            </li>
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Priority phone support
+            </li>
+          </ul>
+          <a href="{{ url_for('login') }}" class="btn-plan btn-plan-amber">Get Started</a>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="plan-card">
+          <p class="plan-name">Enterprise</p>
+          <div class="plan-price">Custom</div>
+          <p class="plan-price-sub">unlimited vehicles · custom SLA</p>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Everything in Pro
+            </li>
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Custom API integrations
+            </li>
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Dedicated account manager
+            </li>
+            <li>
+              <svg class="plan-check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" stroke="#e8910a" stroke-width="1.2"/><path d="M5 8l2 2 4-4" stroke="#e8910a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              On-site onboarding & training
+            </li>
+          </ul>
+          <a href="mailto:sales@askfleets.com" class="btn-plan btn-plan-outline">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CTA BAND ══ -->
+  <section class="cta-band" aria-labelledby="cta-title">
+    <div class="container">
+      <div class="cta-band-inner reveal">
+        <div class="cta-band-text">
+          <h2 id="cta-title">Ready to take command of your fleet?</h2>
+          <p>Sign in now or get in touch with our sales team to book a live demo.</p>
+        </div>
+        <div class="cta-band-actions">
+          <a href="{{ url_for('login') }}" class="btn-amber">Sign In to Dashboard</a>
+          <a href="mailto:sales@askfleets.com" class="btn-ghost" style="padding:.78rem 1.5rem">Book a Demo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="nav-logo">
+            <div class="nav-logo-icon" aria-hidden="true">
+              <svg width="20" height="15" viewBox="0 0 20 15" fill="none">
+                <rect x="0" y="2" width="12" height="9" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                <path d="M12 5h4.5a1.5 1.5 0 0 1 1.2.6L19.5 9V11h-7.5V5Z" fill="rgba(255,255,255,0.6)"/>
+                <circle cx="4" cy="13" r="2" fill="#0f0f0f" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/>
+                <circle cx="16" cy="13" r="2" fill="#0f0f0f" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/>
+                <rect x="13" y="5.5" width="4" height="3" rx=".5" fill="#e8910a"/>
+              </svg>
+            </div>
+          </div>
+          <div class="footer-brand-name">ASKFLEETS</div>
+          <p class="footer-brand-desc">Intelligent fleet management for the modern logistics operation. Trusted by 340+ enterprise clients worldwide.</p>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Product</p>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('features') }}">Features</a></li>
+            <li><a href="#platform">Platform</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#">Integrations</a></li>
+            <li><a href="#">Changelog</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Company</p>
+          <ul class="footer-links">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Support</p>
+          <ul class="footer-links">
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">API Reference</a></li>
+            <li><a href="mailto:support@askfleets.com">Contact Support</a></li>
+            <li><a href="mailto:sales@askfleets.com">Sales</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 ASKFLEETS. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Nav scroll effect ── */
+    const nav = document.getElementById('mainNav');
+    function updateNav() {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    /* ── Mobile nav ── */
+    const mobileNav    = document.getElementById('mobileNav');
+    const navToggle    = document.getElementById('navToggle');
+    const mobileNavClose = document.getElementById('mobileNavClose');
+
+    function openMobileNav() {
+      mobileNav.classList.add('open');
+      navToggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileNav() {
+      mobileNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    navToggle.addEventListener('click', openMobileNav);
+    mobileNavClose.addEventListener('click', closeMobileNav);
+    mobileNav.addEventListener('click', e => {
+      if (e.target === mobileNav) closeMobileNav();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeMobileNav();
+    });
+
+    /* ── Scroll reveal ── */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    /* ── Stagger children of reveal elements ── */
+    document.querySelectorAll('.features-grid .feature-card').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.06}s`;
+    });
+    document.querySelectorAll('.pricing-grid .plan-card').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.1}s`;
+    });
+  </script>
+</body>
+</html>

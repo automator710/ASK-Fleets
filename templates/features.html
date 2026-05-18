@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Features — ASKFLEETS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/features.css') }}" />
+</head>
+<body>
+
+  <!-- MOBILE NAV -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation" role="dialog" aria-modal="true">
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">&#x2715;</button>
+    <a href="{{ url_for('landing') }}">Home</a>
+    <a href="{{ url_for('features') }}" style="color:var(--amber)">Features</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/#about">About</a>
+    <a href="{{ url_for('login') }}" style="color:var(--amber)">Sign In &rarr;</a>
+  </nav>
+
+  <!-- NAV -->
+  <header class="nav" id="mainNav" role="banner">
+    <div class="nav-inner">
+      <a href="{{ url_for('landing') }}" class="nav-logo" aria-label="ASKFLEETS Home">
+        <div class="nav-logo-icon" aria-hidden="true">
+          <svg width="20" height="15" viewBox="0 0 20 15" fill="none">
+            <rect x="0" y="2" width="12" height="9" rx="1.5" fill="white"/>
+            <path d="M12 5h4.5a1.5 1.5 0 0 1 1.2.6L19.5 9V11h-7.5V5Z" fill="white"/>
+            <circle cx="4" cy="13" r="2" fill="#0f0f0f" stroke="white" stroke-width="1.2"/>
+            <circle cx="16" cy="13" r="2" fill="#0f0f0f" stroke="white" stroke-width="1.2"/>
+            <rect x="13" y="5.5" width="4" height="3" rx=".5" fill="#e8910a"/>
+          </svg>
+        </div>
+        <span class="nav-logo-name">ASKFLEETS</span>
+      </a>
+
+      <ul class="nav-links" aria-label="Main navigation">
+        <li><a href="/#features">Features</a></li>
+        <li><a href="/#platform">Platform</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/#about">About</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="{{ url_for('login') }}" class="btn-ghost">Sign In</a>
+        <a href="/#pricing" class="btn-primary">Get Started</a>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero" aria-label="Features hero">
+    <div class="container">
+      <div class="page-hero-inner">
+        <div class="page-hero-left reveal">
+          <span class="tag"><span class="tag-dot"></span>Platform Features</span>
+          <h1 class="page-hero-title">
+            Built for fleets<br/>that can't afford<br/><em>downtime.</em>
+          </h1>
+          <p class="page-hero-desc">
+            Every feature in ASKFLEETS was designed with one goal: give fleet managers complete command — from the first mile to the last — with zero guesswork.
+          </p>
+          <div class="page-hero-actions">
+            <a href="{{ url_for('login') }}" class="btn-amber">Access Dashboard</a>
+            <a href="#deep-gps" class="hero-link">
+              Explore features
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="page-hero-right" aria-hidden="true">
+          <img
+            class="page-hero-img"
+            src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1400&q=90&auto=format&fit=crop"
+            alt="Fleet dispatcher monitoring live dashboard"
+            loading="eager"
+          />
+          <div class="page-hero-overlay"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE NAV TABS -->
+  <nav class="feature-nav" aria-label="Feature sections">
+    <div class="container">
+      <div class="feature-nav-inner">
+        <a class="fnav-item active" href="#core">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+          All Features
+        </a>
+        <a class="fnav-item" href="#deep-gps">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1" opacity=".4"/></svg>
+          Live Tracking
+        </a>
+        <a class="fnav-item" href="#deep-maintenance">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 10L5 7 7 9 10 5.5 12 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Maintenance AI
+        </a>
+        <a class="fnav-item" href="#mobile">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="4" y="1" width="6" height="12" rx="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="10.5" r=".8" fill="currentColor"/></svg>
+          Mobile App
+        </a>
+        <a class="fnav-item" href="#compliance-section">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h4M5 7.5h4M5 10h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Compliance
+        </a>
+        <a class="fnav-item" href="#integrations">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="3.5" cy="7" r="2" stroke="currentColor" stroke-width="1.3"/><circle cx="10.5" cy="3.5" r="2" stroke="currentColor" stroke-width="1.3"/><circle cx="10.5" cy="10.5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7h3M5.4 6.4l2.8-2M5.4 7.6l2.8 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          Integrations
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CORE FEATURES GRID -->
+  <section class="core-features" id="core" aria-labelledby="core-title">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="tag"><span class="tag-dot"></span>Platform Capabilities</span>
+        <h2 class="section-title" id="core-title">Everything your fleet operation needs</h2>
+        <p class="section-desc">Built for dispatchers, fleet managers, and executives who need real answers — not just raw data.</p>
+      </div>
+
+      <div class="features-grid-6 reveal">
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <circle cx="11" cy="11" r="3.5" stroke="#e8910a" stroke-width="1.6"/>
+              <circle cx="11" cy="11" r="8" stroke="#e8910a" stroke-width="1.2" opacity=".35"/>
+              <path d="M11 2v3M11 17v3M2 11h3M17 11h3" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Live GPS Tracking</h3>
+          <p class="feature-card-desc">Real-time vehicle positions updated every 10 seconds. Geofencing, trip replay, and ETA calculations built in.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M3 16L7 11 10 14 14 9 19 6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="2" y="2" width="18" height="18" rx="3" stroke="#e8910a" stroke-width="1.2" opacity=".3"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Predictive Maintenance</h3>
+          <p class="feature-card-desc">AI models flag vehicles 14 days before breakdown probability spikes — cutting unplanned downtime by 40%.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="3" y="10" width="16" height="10" rx="2" stroke="#e8910a" stroke-width="1.5"/>
+              <path d="M7 10V7.5a4 4 0 0 1 8 0V10" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="11" cy="15" r="1.5" fill="#e8910a"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">DOT Compliance</h3>
+          <p class="feature-card-desc">Automated HOS logs, ELD integration, IFTA reporting, and one-click audit-ready documents.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M11 3C7.134 3 4 6.134 4 10c0 2.6 1.4 4.88 3.5 6.16L11 19l3.5-2.84C16.6 14.88 18 12.6 18 10c0-3.866-3.134-7-7-7Z" stroke="#e8910a" stroke-width="1.5"/>
+              <circle cx="11" cy="10" r="2.5" fill="#e8910a" opacity=".6"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Smart Route Optimisation</h3>
+          <p class="feature-card-desc">Dynamic re-routing around traffic, weather, and load constraints — saving up to 22% on fuel spend.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M3 7h16M3 11h12M3 15h8" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Driver Scorecards</h3>
+          <p class="feature-card-desc">Harshness, idling, speeding, and seatbelt metrics per driver — with automated coaching triggers.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="3" y="3" width="7.5" height="7.5" rx="1.5" stroke="#e8910a" stroke-width="1.5"/>
+              <rect x="11.5" y="3" width="7.5" height="7.5" rx="1.5" stroke="#e8910a" stroke-width="1.5" opacity=".5"/>
+              <rect x="3" y="11.5" width="7.5" height="7.5" rx="1.5" stroke="#e8910a" stroke-width="1.5" opacity=".5"/>
+              <rect x="11.5" y="11.5" width="7.5" height="7.5" rx="1.5" stroke="#e8910a" stroke-width="1.5" opacity=".25"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">API &amp; Integrations</h3>
+          <p class="feature-card-desc">Connect to your TMS, ERP, or accounting stack via REST API, webhooks, and 50+ pre-built connectors.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="5" y="2" width="8" height="14" rx="1.5" stroke="#e8910a" stroke-width="1.5"/>
+              <path d="M5 16h8M9 19v1" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/>
+              <rect x="13" y="7" width="5" height="9" rx="1" stroke="#e8910a" stroke-width="1.3" opacity=".5"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Mobile Driver App</h3>
+          <p class="feature-card-desc">Drivers get turn-by-turn navigation, delivery confirmations, and DVIR inspection forms on iOS and Android.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <circle cx="11" cy="8" r="3.5" stroke="#e8910a" stroke-width="1.5"/>
+              <path d="M4 19c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Crew &amp; Driver Management</h3>
+          <p class="feature-card-desc">Assign loads, manage shifts, track HOS, and communicate directly with drivers from one unified panel.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M3 5h16v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5Z" stroke="#e8910a" stroke-width="1.5"/>
+              <path d="M7 17v2M15 17v2M5 20h12" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M7 9l2.5 2.5 5-5" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-card-title">Command Center Dashboard</h3>
+          <p class="feature-card-desc">Live map, exception queue, and driver comms in a single screen designed to cut context-switching fatigue.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip" aria-label="Key metrics">
+    <div class="container">
+      <div class="stat-strip-inner reveal">
+        <div class="stat-item">
+          <div class="stat-value">12<span>K+</span></div>
+          <div class="stat-label">Active Vehicles</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">40<span>%</span></div>
+          <div class="stat-label">Less Downtime</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">22<span>%</span></div>
+          <div class="stat-label">Avg. Fuel Savings</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">98<span>.4%</span></div>
+          <div class="stat-label">Platform Uptime</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEEP DIVE: GPS TRACKING -->
+  <section class="deep-dive" id="deep-gps" aria-labelledby="gps-title">
+    <div class="container">
+      <div class="deep-inner reveal">
+        <div class="deep-img-wrap">
+          <img
+            class="deep-img"
+            src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1200&q=90&auto=format&fit=crop"
+            alt="Trucks on highway at sunset — live tracking view"
+            loading="lazy"
+          />
+          <div class="deep-badge" aria-hidden="true">
+            <span class="badge-indicator"></span>
+            <span class="badge-text">Fleet Online — 1,240 active</span>
+          </div>
+        </div>
+
+        <div class="deep-content">
+          <span class="tag"><span class="tag-dot"></span>Live GPS Tracking</span>
+          <h2 id="gps-title">Know exactly where every vehicle is — right now</h2>
+          <p>10-second position updates across your entire fleet. Whether you're managing 10 vans or 10,000 semis, the live map gives you instant situational awareness with zero lag.</p>
+          <ul class="check-list">
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Custom geofences with instant entry/exit alerts sent to dispatcher
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Full trip replay — rewind any vehicle's route, stop, and idle history
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              AI-powered ETA calculations accounting for live traffic and load weight
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Offline mode — devices cache position data when connectivity drops
+            </li>
+          </ul>
+          <a href="{{ url_for('login') }}" class="btn-amber">Open Live Map</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEEP DIVE: PREDICTIVE MAINTENANCE -->
+  <section class="deep-dive" id="deep-maintenance" aria-labelledby="maint-title">
+    <div class="container">
+      <div class="deep-inner reverse reveal">
+        <div class="deep-img-wrap">
+          <img
+            class="deep-img"
+            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=90&auto=format&fit=crop"
+            alt="Mechanic performing truck maintenance inspection"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="deep-content">
+          <span class="tag"><span class="tag-dot"></span>Predictive Maintenance</span>
+          <h2 id="maint-title">Fix it before it breaks — 14 days early</h2>
+          <p>Our ML engine ingests OBD-II fault codes, mileage patterns, and service history to surface vehicles with rising failure probability weeks before they go off the road.</p>
+          <ul class="check-list">
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Automated work order creation when OBD thresholds are breached
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Parts inventory sync with supplier catalogs — one-click ordering
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Full service history per VIN, exportable for resale or audit
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              40% average reduction in unplanned roadside breakdowns
+            </li>
+          </ul>
+          <a href="{{ url_for('login') }}" class="btn-amber">Explore Maintenance AI</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEEP DIVE: ROUTE OPTIMISATION -->
+  <section class="deep-dive" aria-labelledby="route-title">
+    <div class="container">
+      <div class="deep-inner reveal">
+        <div class="deep-img-wrap">
+          <img
+            class="deep-img"
+            src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?w=1200&q=90&auto=format&fit=crop"
+            alt="Semi truck fleet at depot"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="deep-content">
+          <span class="tag"><span class="tag-dot"></span>Smart Route Optimisation</span>
+          <h2 id="route-title">Every mile costs money — make each one count</h2>
+          <p>Dynamic re-routing considers live traffic, weather events, road restrictions by vehicle weight class, delivery windows, and driver HOS remaining — automatically, all day long.</p>
+          <ul class="check-list">
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Multi-stop load consolidation to reduce deadhead miles
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Weight-class restricted road avoidance built into every route
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              22% average fuel savings reported across our enterprise client base
+            </li>
+            <li>
+              <div class="check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              One-tap re-dispatch to nearest available driver when plans change
+            </li>
+          </ul>
+          <a href="{{ url_for('login') }}" class="btn-amber">View Route Planner</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOBILE APP SECTION -->
+  <section class="mobile-section" id="mobile" aria-labelledby="mobile-title">
+    <div class="container">
+      <div class="mobile-inner">
+
+        <div class="mobile-content reveal">
+          <span class="tag"><span class="tag-dot"></span>Mobile App</span>
+          <h2 id="mobile-title">The entire platform in your drivers' pockets</h2>
+          <p>The ASKFLEETS driver app puts navigation, load details, DVIR inspections, and two-way messaging on iOS and Android. No separate hardware required.</p>
+          <ul class="mobile-check-list">
+            <li>
+              <div class="mobile-check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Turn-by-turn navigation with truck-safe routing built in
+            </li>
+            <li>
+              <div class="mobile-check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Digital DVIR — pre- and post-trip inspection reports in under 3 minutes
+            </li>
+            <li>
+              <div class="mobile-check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              ELD-certified HOS logs — FMCSA compliant out of the box
+            </li>
+            <li>
+              <div class="mobile-check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              POD capture — photo, signature, and barcode scan on delivery
+            </li>
+            <li>
+              <div class="mobile-check-icon" aria-hidden="true"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#e8910a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              Works offline — syncs automatically when connection restores
+            </li>
+          </ul>
+          <a href="{{ url_for('login') }}" class="btn-amber">Get the App</a>
+        </div>
+
+        <!-- Phone mockup -->
+        <div class="phone-wrap reveal" style="transition-delay:.15s" aria-hidden="true">
+          <div class="phone-glow phone-glow-1"></div>
+          <div class="phone-glow phone-glow-2"></div>
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="phone-status">
+                <span class="phone-status-time">9:41</span>
+                <div class="phone-status-icons">
+                  <div class="phone-status-dot"></div>
+                  <div class="phone-status-dot"></div>
+                  <div class="phone-status-dot"></div>
+                </div>
+              </div>
+              <div class="phone-header">
+                <div class="phone-header-label">ASKFLEETS DISPATCH</div>
+                <div class="phone-header-title">
+                  <span class="phone-live-dot"></span>Live Fleet View
+                </div>
+              </div>
+              <div class="phone-map">
+                <div class="phone-map-grid"></div>
+                <div class="phone-map-road phone-map-road-h" style="top:38%"></div>
+                <div class="phone-map-road phone-map-road-h" style="top:62%"></div>
+                <div class="phone-map-road phone-map-road-v" style="left:30%"></div>
+                <div class="phone-map-road phone-map-road-v" style="left:65%"></div>
+                <div class="truck-pin" style="top:33%;left:25%;"></div>
+                <div class="truck-pin pin-green" style="top:55%;left:58%;"></div>
+                <div class="truck-pin pin-blue" style="top:22%;left:60%;"></div>
+                <div class="truck-pin" style="top:65%;left:22%;"></div>
+                <div class="truck-pin pin-green" style="top:42%;left:72%;"></div>
+              </div>
+              <div class="phone-cards">
+                <div class="phone-card">
+                  <div class="phone-card-icon amber">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.5" stroke="#e8910a" stroke-width="1.3"/><path d="M7 1v1.5M7 11.5V13M1 7h1.5M11.5 7H13" stroke="#e8910a" stroke-width="1.2" stroke-linecap="round"/></svg>
+                  </div>
+                  <div class="phone-card-body">
+                    <div class="phone-card-title">Truck #A-1047</div>
+                    <div class="phone-card-sub">I-80 E · ETA 14:32</div>
+                  </div>
+                  <div class="phone-card-value">68 mph</div>
+                </div>
+                <div class="phone-card">
+                  <div class="phone-card-icon green">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 9L4.5 6.5 6.5 8.5 9.5 5 12 2.5" stroke="#22c55e" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="phone-card-body">
+                    <div class="phone-card-title">Truck #B-0392</div>
+                    <div class="phone-card-sub">Delivered · Chicago IL</div>
+                  </div>
+                  <div class="phone-card-value" style="color:#22c55e">Done</div>
+                </div>
+                <div class="phone-card">
+                  <div class="phone-card-icon blue">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="3" y="2" width="8" height="10" rx="1" stroke="#3b82f6" stroke-width="1.3"/><path d="M5 5h4M5 7h3" stroke="#3b82f6" stroke-width="1.2" stroke-linecap="round"/></svg>
+                  </div>
+                  <div class="phone-card-body">
+                    <div class="phone-card-title">DVIR Pending</div>
+                    <div class="phone-card-sub">Truck #C-0118 · Due 15:00</div>
+                  </div>
+                  <div class="phone-card-value" style="color:#3b82f6">1 hr</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPLIANCE -->
+  <section class="compliance" id="compliance-section" aria-labelledby="compliance-title">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="tag"><span class="tag-dot"></span>DOT Compliance</span>
+        <h2 class="section-title" id="compliance-title">Audit-ready, every single day</h2>
+        <p class="section-desc">FMCSA compliance isn't optional — and with ASKFLEETS it's never a scramble. Every log, every inspection, every IFTA filing: automated.</p>
+      </div>
+
+      <div class="compliance-grid reveal">
+        <div>
+          <div class="compliance-table">
+            <div class="compliance-table-header">
+              <span>Compliance Item</span>
+              <span>Status</span>
+              <span>Type</span>
+            </div>
+            <div class="compliance-row">
+              <span class="compliance-label">Hours of Service Logs</span>
+              <span class="pill pill-green"><span class="pill-dot"></span>Current</span>
+              <span class="pill pill-blue"><span class="pill-dot"></span>ELD</span>
+            </div>
+            <div class="compliance-row">
+              <span class="compliance-label">DVIR Inspections</span>
+              <span class="pill pill-green"><span class="pill-dot"></span>Current</span>
+              <span class="pill pill-amber"><span class="pill-dot"></span>Daily</span>
+            </div>
+            <div class="compliance-row">
+              <span class="compliance-label">IFTA Fuel Tax Reports</span>
+              <span class="pill pill-green"><span class="pill-dot"></span>Current</span>
+              <span class="pill pill-blue"><span class="pill-dot"></span>Quarterly</span>
+            </div>
+            <div class="compliance-row">
+              <span class="compliance-label">Driver Medical Cards</span>
+              <span class="pill pill-amber"><span class="pill-dot"></span>2 Expiring</span>
+              <span class="pill pill-amber"><span class="pill-dot"></span>Annual</span>
+            </div>
+            <div class="compliance-row">
+              <span class="compliance-label">Vehicle Registration</span>
+              <span class="pill pill-green"><span class="pill-dot"></span>Current</span>
+              <span class="pill pill-blue"><span class="pill-dot"></span>Annual</span>
+            </div>
+            <div class="compliance-row">
+              <span class="compliance-label">Drug &amp; Alcohol Testing</span>
+              <span class="pill pill-green"><span class="pill-dot"></span>Current</span>
+              <span class="pill pill-amber"><span class="pill-dot"></span>Random</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="compliance-info">
+          <h3>Zero compliance surprises</h3>
+          <p>ASKFLEETS tracks every regulatory deadline across your fleet and sends automated reminders before anything lapses — so an audit is never a fire drill.</p>
+          <ul class="compliance-bullets">
+            <li>ELD mandate compliant — FMCSA registered and certified</li>
+            <li>Automated IFTA mileage tracking per state, per quarter</li>
+            <li>One-click DOT audit packet export with all supporting documents</li>
+            <li>Driver qualification file management with expiry tracking</li>
+            <li>Roadside inspection scoring and corrective action workflows</li>
+            <li>Real-time HOS violation warnings pushed to driver and dispatcher simultaneously</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS -->
+  <section class="integrations" id="integrations" aria-labelledby="int-title">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="tag"><span class="tag-dot"></span>Integrations</span>
+        <h2 class="section-title" id="int-title">Plugs into the tools you already use</h2>
+        <p class="section-desc">50+ pre-built connectors covering TMS, ERP, fuel cards, payroll, and more. Plus a full REST API and webhook engine for custom builds.</p>
+      </div>
+
+      <div class="integration-grid reveal">
+
+        <div class="integration-card">
+          <div class="integration-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="12" rx="2" stroke="#e8910a" stroke-width="1.5"/><path d="M2 8h16" stroke="#e8910a" stroke-width="1.5"/></svg>
+          </div>
+          <div>
+            <div class="integration-name">McLeod TMS</div>
+            <div class="integration-type">Transport Management</div>
+          </div>
+          <span class="integration-tag">Native</span>
+        </div>
+
+        <div class="integration-card">
+          <div class="integration-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4l6 6-6 6" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="integration-name">SAP S/4HANA</div>
+            <div class="integration-type">ERP System</div>
+          </div>
+          <span class="integration-tag">Native</span>
+        </div>
+
+        <div class="integration-card">
+          <div class="integration-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="6" height="6" rx="1" stroke="#e8910a" stroke-width="1.5"/><rect x="11" y="3" width="6" height="6" rx="1" stroke="#e8910a" stroke-width="1.5" opacity=".5"/><rect x="3" y="11" width="6" height="6" rx="1" stroke="#e8910a" stroke-width="1.5" opacity=".5"/><rect x="11" y="11" width="6" height="6" rx="1" stroke="#e8910a" stroke-width="1.5" opacity=".25"/></svg>
+          </div>
+          <div>
+            <div class="integration-name">QuickBooks</div>
+            <div class="integration-type">Accounting</div>
+          </div>
+          <span class="integration-tag">Native</span>
+        </div>
+
+        <div class="integration-card">
+          <div class="integration-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#e8910a" stroke-width="1.5"/><path d="M10 6v4l3 2" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="integration-name">Comdata Fuel</div>
+            <div class="integration-type">Fuel Card</div>
+          </div>
+          <span class="integration-tag">Native</span>
+        </div>
+
+        <div class="integration-card">
+          <div class="integration-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 7h14M3 10h10M3 13h7" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="integration-name">Samsara ELD</div>
+            <div class="integration-type">ELD Hardware</div>
+          </div>
+          <span class="integration-tag">Native</span>
+        </div>
+
+        <div class="integration-card">
+          <div class="integration-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3C6.134 3 3 6.134 3 10c0 2.6 1.4 4.88 3.5 6.16L10 19l3.5-2.84C15.6 14.88 17 12.6 17 10c0-3.866-3.134-7-7-7Z" stroke="#e8910a" stroke-width="1.5"/></svg>
+          </div>
+          <div>
+            <div class="integration-name">Google Maps API</div>
+            <div class="integration-type">Mapping &amp; Traffic</div>
+          </div>
+          <span class="integration-tag">Native</span>
+        </div>
+
+        <div class="integration-card">
+          <div class="integration-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="12" rx="2" stroke="#e8910a" stroke-width="1.5"/><path d="M14 5V4a2 2 0 0 0-4 0v1" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="integration-name">ADP Workforce</div>
+            <div class="integration-type">Payroll &amp; HR</div>
+          </div>
+          <span class="integration-tag">Webhook</span>
+        </div>
+
+        <div class="integration-card">
+          <div class="integration-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4h12v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4Z" stroke="#e8910a" stroke-width="1.5"/><path d="M8 17h4" stroke="#e8910a" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="integration-name">REST API</div>
+            <div class="integration-type">Custom Integrations</div>
+          </div>
+          <span class="integration-tag">Open</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="cta-band" aria-labelledby="cta-title">
+    <div class="container">
+      <div class="cta-band-inner reveal">
+        <div class="cta-band-text">
+          <h2 id="cta-title">Ready to take command of your fleet?</h2>
+          <p>Sign in now or get in touch with our sales team to book a live demo.</p>
+        </div>
+        <div class="cta-band-actions">
+          <a href="{{ url_for('login') }}" class="btn-amber">Sign In to Dashboard</a>
+          <a href="mailto:sales@askfleets.com" class="btn-ghost" style="padding:.78rem 1.5rem">Book a Demo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="nav-logo">
+            <div class="nav-logo-icon" aria-hidden="true">
+              <svg width="20" height="15" viewBox="0 0 20 15" fill="none">
+                <rect x="0" y="2" width="12" height="9" rx="1.5" fill="rgba(255,255,255,0.6)"/>
+                <path d="M12 5h4.5a1.5 1.5 0 0 1 1.2.6L19.5 9V11h-7.5V5Z" fill="rgba(255,255,255,0.6)"/>
+                <circle cx="4" cy="13" r="2" fill="#0f0f0f" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/>
+                <circle cx="16" cy="13" r="2" fill="#0f0f0f" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/>
+                <rect x="13" y="5.5" width="4" height="3" rx=".5" fill="#e8910a"/>
+              </svg>
+            </div>
+          </div>
+          <div class="footer-brand-name">ASKFLEETS</div>
+          <p class="footer-brand-desc">Intelligent fleet management for the modern logistics operation. Trusted by 340+ enterprise clients worldwide.</p>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Product</p>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('features') }}">Features</a></li>
+            <li><a href="/#platform">Platform</a></li>
+            <li><a href="/#pricing">Pricing</a></li>
+            <li><a href="#">Integrations</a></li>
+            <li><a href="#">Changelog</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Company</p>
+          <ul class="footer-links">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer-col-title">Support</p>
+          <ul class="footer-links">
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">API Reference</a></li>
+            <li><a href="mailto:support@askfleets.com">Contact Support</a></li>
+            <li><a href="mailto:sales@askfleets.com">Sales</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 ASKFLEETS. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Nav scroll */
+    const nav = document.getElementById('mainNav');
+    function updateNav() {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    /* Mobile nav */
+    const mobileNav      = document.getElementById('mobileNav');
+    const navToggle      = document.getElementById('navToggle');
+    const mobileNavClose = document.getElementById('mobileNavClose');
+    function openMobileNav()  { mobileNav.classList.add('open'); navToggle.setAttribute('aria-expanded','true');  document.body.style.overflow='hidden'; }
+    function closeMobileNav() { mobileNav.classList.remove('open'); navToggle.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+    navToggle.addEventListener('click', openMobileNav);
+    mobileNavClose.addEventListener('click', closeMobileNav);
+    mobileNav.addEventListener('click', e => { if (e.target === mobileNav) closeMobileNav(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
+
+    /* Scroll reveal */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* Stagger feature cards */
+    document.querySelectorAll('.features-grid-6 .feature-card').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.055}s`;
+    });
+    document.querySelectorAll('.integration-grid .integration-card').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.06}s`;
+    });
+
+    /* Feature nav active state on scroll */
+    const sections = ['core','deep-gps','deep-maintenance','mobile','compliance-section','integrations'];
+    const fnavItems = document.querySelectorAll('.fnav-item');
+    const sectionEls = sections.map(id => document.getElementById(id)).filter(Boolean);
+
+    function updateFnav() {
+      let current = '';
+      sectionEls.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 180) current = sec.id;
+      });
+      fnavItems.forEach(item => {
+        const href = item.getAttribute('href').replace('#','');
+        item.classList.toggle('active', href === current);
+      });
+    }
+    window.addEventListener('scroll', updateFnav, { passive: true });
+    updateFnav();
+  </script>
+</body>
+</html>
