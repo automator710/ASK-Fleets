@@ -588,7 +588,7 @@
           ASKFLEETS gives logistics operators real-time command over their entire fleet — from live GPS to predictive maintenance and DOT compliance — in one unified platform.
         </p>
         <div class="hero-actions reveal" style="transition-delay:.24s;text-align:center;display:flex;justify-content:center">
-          <a href="login.html" class="btn-amber">Track Consignment</a>
+          <button class="btn-amber" id="trackBtn" onclick="openTrackModal()">Track Consignment</button>
         </div>
       </div>
 
@@ -872,6 +872,48 @@
     </div>
   </footer>
 
+  <!-- ══ TRACK CONSIGNMENT MODAL ══ -->
+  <div class="track-modal-overlay" id="trackModal" role="dialog" aria-modal="true" aria-labelledby="trackModalTitle" onclick="handleModalOverlayClick(event)">
+    <div class="track-modal">
+      <button class="track-modal-close" onclick="closeTrackModal()" aria-label="Close">&#x2715;</button>
+
+      <div class="track-modal-header">
+        <div class="track-modal-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="4" fill="#e8910a"/>
+            <circle cx="11" cy="11" r="8" stroke="#e8910a" stroke-width="1.4" opacity=".3"/>
+            <path d="M11 1v2.5M11 18.5V21M1 11h2.5M18.5 11H21" stroke="#e8910a" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h2 class="track-modal-title" id="trackModalTitle">Track Your Consignment</h2>
+        <p class="track-modal-sub">Select how you'd like to search and enter your reference below.</p>
+      </div>
+
+      <div class="track-type-group" role="group" aria-label="Search by">
+        <button class="track-type-btn active" data-type="awb" onclick="setTrackType('awb', this)">AWB</button>
+        <button class="track-type-btn" data-type="order" onclick="setTrackType('order', this)">Order ID</button>
+        <button class="track-type-btn" data-type="mobile" onclick="setTrackType('mobile', this)">Mobile No.</button>
+      </div>
+
+      <div class="track-input-wrap">
+        <label class="track-label" id="trackLabel" for="trackInput">Air Waybill Number</label>
+        <input
+          class="track-input"
+          id="trackInput"
+          type="text"
+          placeholder="e.g. 123-45678901"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <button class="track-submit" onclick="submitTrack()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="white"/><circle cx="8" cy="8" r="6" stroke="white" stroke-width="1.2" opacity=".4"/><path d="M8 1v1.5M8 13.5V15M1 8h1.5M13.5 8H15" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Track Consignment
+      </button>
+    </div>
+  </div>
+
   <script>
     /* ── Nav scroll effect ── */
     const nav = document.getElementById('mainNav');
@@ -917,6 +959,56 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     revealEls.forEach(el => observer.observe(el));
+
+    /* ── Track Consignment modal ── */
+    const trackLabels = {
+      awb:    'Air Waybill Number',
+      order:  'Order ID',
+      mobile: 'Mobile Number',
+    };
+    const trackPlaceholders = {
+      awb:    'e.g. 123-45678901',
+      order:  'e.g. ORD-20260001',
+      mobile: 'e.g. +1 800 000 0000',
+    };
+    let currentType = 'awb';
+
+    function openTrackModal() {
+      document.getElementById('trackModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('trackInput').focus();
+    }
+    function closeTrackModal() {
+      document.getElementById('trackModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function handleModalOverlayClick(e) {
+      if (e.target === document.getElementById('trackModal')) closeTrackModal();
+    }
+    function setTrackType(type, btn) {
+      currentType = type;
+      document.querySelectorAll('.track-type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('trackLabel').textContent = trackLabels[type];
+      const input = document.getElementById('trackInput');
+      input.placeholder = trackPlaceholders[type];
+      input.value = '';
+      input.type = type === 'mobile' ? 'tel' : 'text';
+      input.focus();
+    }
+    function submitTrack() {
+      const val = document.getElementById('trackInput').value.trim();
+      if (!val) {
+        document.getElementById('trackInput').classList.add('error');
+        document.getElementById('trackInput').focus();
+        setTimeout(() => document.getElementById('trackInput').classList.remove('error'), 1200);
+        return;
+      }
+      alert(`Tracking by ${trackLabels[currentType]}: ${val}\n\n(Connect this to your tracking backend.)`);
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeTrackModal();
+    });
 
     /* ── FAQ accordion ── */
     document.querySelectorAll('.faq-question').forEach(btn => {

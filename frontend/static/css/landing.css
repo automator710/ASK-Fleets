@@ -1182,3 +1182,186 @@ a { text-decoration: none; color: inherit; }
   .faq { padding: 4rem 0; }
   .faq-question { font-size: .9rem; }
 }
+
+/* ══════════════════════════════════════
+   TRACK CONSIGNMENT MODAL
+══════════════════════════════════════ */
+.track-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(15,15,15,.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.track-modal-overlay.open { display: flex; }
+
+.track-modal {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 460px;
+  position: relative;
+  box-shadow: 0 32px 80px rgba(0,0,0,.18);
+  animation: modal-in .25s cubic-bezier(.22,1,.36,1);
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(24px) scale(.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.track-modal-close {
+  position: absolute;
+  top: 1.1rem; right: 1.25rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1;
+  padding: .3rem;
+  transition: color .2s;
+}
+.track-modal-close:hover { color: var(--ink); }
+
+.track-modal-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.track-modal-icon {
+  width: 52px; height: 52px;
+  background: var(--amber-lt);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.track-modal-title {
+  font-family: var(--font-head);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  margin-bottom: .4rem;
+}
+
+.track-modal-sub {
+  font-size: .82rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.track-type-group {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+}
+
+.track-type-btn {
+  flex: 1;
+  padding: .6rem .5rem;
+  font-family: var(--font-head);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.track-type-btn:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+.track-type-btn.active {
+  border-color: var(--amber);
+  background: var(--amber-lt);
+  color: var(--amber-dark);
+}
+
+.track-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  margin-bottom: 1.25rem;
+}
+
+.track-label {
+  font-family: var(--font-head);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.track-input {
+  width: 100%;
+  padding: .85rem 1rem;
+  font-family: var(--font-body);
+  font-size: .95rem;
+  font-weight: 400;
+  color: var(--ink);
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.track-input:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(232,145,10,.12);
+}
+.track-input.error {
+  border-color: #e03e3e;
+  box-shadow: 0 0 0 3px rgba(224,62,62,.12);
+  animation: shake .3s ease;
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25%      { transform: translateX(-6px); }
+  75%      { transform: translateX(6px); }
+}
+
+.track-submit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  padding: .9rem 1rem;
+  font-family: var(--font-head);
+  font-size: .88rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--white);
+  background: var(--amber);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background .2s, box-shadow .2s, transform .1s;
+  box-shadow: 0 4px 20px rgba(232,145,10,.3);
+}
+.track-submit:hover {
+  background: var(--amber-dark);
+  box-shadow: 0 6px 28px rgba(232,145,10,.4);
+}
+.track-submit:active { transform: scale(.98); }
+
+@media (max-width: 480px) {
+  .track-modal { padding: 2rem 1.25rem; }
+  .track-type-group { gap: .35rem; }
+  .track-type-btn { font-size: .72rem; padding: .55rem .35rem; }
+}
