@@ -6,7 +6,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 
 load_dotenv()
 
-app = Flask(__name__)
+_root = os.path.join(os.path.dirname(__file__), "..", "frontend")
+app = Flask(__name__, template_folder=os.path.join(_root, "templates"), static_folder=os.path.join(_root, "static"))
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev-secret-key-change-in-production")
 
 DASHBOARD_ROLES = {"admin", "manager"}
