@@ -15,34 +15,34 @@ class TestFeatures:
 
 
 class TestDashboard:
-    def test_dashboard_unauthenticated_redirects_to_landing(self, client):
-        response = client.get("/dashboard")
+    def test_dashboard_unauthenticated_redirects_to_login(self, dash_client):
+        response = dash_client.get("/dashboard")
         assert response.status_code == 302
-        assert response.headers["Location"].endswith("/")
+        assert "/login" in response.headers["Location"]
 
-    def test_dashboard_wrong_role_returns_403(self, client):
-        with client.session_transaction() as sess:
-            sess["user"] = "viewer@askfleets.com"
+    def test_dashboard_wrong_role_returns_403(self, dash_client):
+        with dash_client.session_transaction() as sess:
+            sess["user"] = "viewer"
             sess["role"] = "viewer"
-        response = client.get("/dashboard")
+        response = dash_client.get("/dashboard")
         assert response.status_code == 403
 
-    def test_dashboard_authenticated_returns_200(self, client):
-        with client.session_transaction() as sess:
-            sess["user"] = "admin@askfleets.com"
+    def test_dashboard_authenticated_returns_200(self, dash_client):
+        with dash_client.session_transaction() as sess:
+            sess["user"] = "admin"
             sess["role"] = "admin"
-        response = client.get("/dashboard")
+        response = dash_client.get("/dashboard")
         assert response.status_code == 200
 
 
 class TestLogout:
-    def test_logout_clears_session_and_redirects(self, client):
-        with client.session_transaction() as sess:
-            sess["user"] = "admin@askfleets.com"
+    def test_logout_clears_session_and_redirects(self, dash_client):
+        with dash_client.session_transaction() as sess:
+            sess["user"] = "admin"
 
-        response = client.get("/logout")
+        response = dash_client.get("/logout")
         assert response.status_code == 302
-        assert "/" in response.headers["Location"]
+        assert "/login" in response.headers["Location"]
 
-        with client.session_transaction() as sess:
+        with dash_client.session_transaction() as sess:
             assert "user" not in sess

@@ -1,336 +1,619 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard — ASKFLEETS</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
   <!-- ══ SIDEBAR ══ -->
   <aside class="sidebar" id="sidebar">
+
+    <!-- Logo -->
     <div class="sidebar-logo">
       <div class="logo-icon">
         <svg width="20" height="15" viewBox="0 0 20 15" fill="none">
           <rect x="0" y="2" width="12" height="9" rx="1.5" fill="white"/>
           <path d="M12 5h4.5a1.5 1.5 0 0 1 1.2.6L19.5 9V11h-7.5V5Z" fill="white"/>
-          <circle cx="4" cy="13" r="2" fill="#0f0f0f" stroke="white" stroke-width="1.2"/>
-          <circle cx="16" cy="13" r="2" fill="#0f0f0f" stroke="white" stroke-width="1.2"/>
-          <rect x="13" y="5.5" width="4" height="3" rx=".5" fill="#e8910a"/>
+          <circle cx="4" cy="13" r="2" fill="#1a1a2e" stroke="white" stroke-width="1.2"/>
+          <circle cx="16" cy="13" r="2" fill="#1a1a2e" stroke="white" stroke-width="1.2"/>
+          <rect x="13" y="5.5" width="4" height="3" rx=".5" fill="#f59e0b"/>
         </svg>
       </div>
       <span class="logo-name">ASKFLEETS</span>
     </div>
 
+    <!-- Nav -->
     <nav class="sidebar-nav" aria-label="Main navigation">
-      <a class="nav-item active" href="#">
+      <a class="nav-item" href="#" id="settingsBtn" aria-label="Settings">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-          <rect x="1" y="1" width="6.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
-          <rect x="10.5" y="1" width="6.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
-          <rect x="1" y="10.5" width="6.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
-          <rect x="10.5" y="10.5" width="6.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M9 1.5v1.8M9 14.7v1.8M1.5 9h1.8M14.7 9h1.8
+                   M3.6 3.6l1.27 1.27M13.13 13.13l1.27 1.27
+                   M3.6 14.4l1.27-1.27M13.13 4.87l1.27-1.27"
+                stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
         </svg>
-        Overview
+        Settings
       </a>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="#" id="gpsBtn" aria-label="GPS Tracking">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
           <circle cx="9" cy="9" r="3" stroke="currentColor" stroke-width="1.4"/>
-          <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1" opacity=".4"/>
-          <path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.4" stroke-dasharray="3 2"/>
+          <line x1="9" y1="1" x2="9" y2="3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="9" y1="14.5" x2="9" y2="17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="1" y1="9" x2="3.5" y2="9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <line x1="14.5" y1="9" x2="17" y2="9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
         </svg>
-        Live Tracking
+        GPS Tracking
       </a>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="#" id="apiAuthBtn" aria-label="API Authentication">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-          <path d="M2 13L5.5 9 8 11.5 11.5 7.5 16 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="1" y="1" width="16" height="16" rx="2.5" stroke="currentColor" stroke-width="1.2" opacity=".3"/>
+          <circle cx="7" cy="7" r="3.5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M10 10l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M12.5 13l1-.9M14 11.5l1-.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
         </svg>
-        Maintenance
-      </a>
-      <a class="nav-item" href="#">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-          <path d="M9 2C5.686 2 3 4.686 3 8c0 2.2 1.2 4.12 3 5.18L9 16l3-2.82C13.8 12.12 15 10.2 15 8c0-3.314-2.686-6-6-6Z" stroke="currentColor" stroke-width="1.4"/>
-          <circle cx="9" cy="8" r="2" fill="currentColor" opacity=".5"/>
-        </svg>
-        Routes
-      </a>
-      <a class="nav-item" href="#">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-          <circle cx="9" cy="6.5" r="3" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M3 16c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-        </svg>
-        Drivers
-      </a>
-      <a class="nav-item" href="#">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-          <rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/>
-          <path d="M6 9l2 2 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Compliance
-      </a>
-      <a class="nav-item" href="#">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-          <path d="M2 5h14M2 9h10M2 13h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-        </svg>
-        Reports
+        API Auth
       </a>
     </nav>
 
+    <!-- Logout at bottom -->
     <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <div class="user-avatar">A</div>
-        <div class="user-info">
-          <span class="user-name">Admin</span>
-          <span class="user-role">Fleet Manager</span>
-        </div>
-      </div>
-      <a href="{{ url_for('logout') }}" class="logout-btn" aria-label="Sign out">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M6 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3M10 11l3-3-3-3M13 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <a href="{{ url_for('logout') }}" class="logout-btn">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M7 2H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h3
+                   M12 13l4-4-4-4M16 9H7"
+                stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
+        Logout
       </a>
     </div>
+
   </aside>
 
-  <!-- ══ MAIN CONTENT ══ -->
+  <!-- ══ MAIN ══ -->
   <div class="main">
 
-    <!-- Top bar -->
+    <!-- Topbar -->
     <header class="topbar">
       <div class="topbar-left">
         <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
           <span></span><span></span><span></span>
         </button>
-        <div class="topbar-title">Overview</div>
+        <span class="topbar-brand">CMS Portal</span>
       </div>
       <div class="topbar-right">
-        <button class="topbar-icon-btn" aria-label="Notifications">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M9 2a5 5 0 0 0-5 5v3l-1.5 2.5h13L14 10V7a5 5 0 0 0-5-5Z" stroke="currentColor" stroke-width="1.4"/>
-            <path d="M7 14.5a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-          <span class="notif-dot"></span>
-        </button>
+        <!-- User chip -->
+        <div class="user-chip">
+          <div class="user-avatar">{{ session.get('name', 'A')[0] | upper }}</div>
+          <div class="user-info">
+            <span class="user-name">{{ session.get('name', 'Admin') }}</span>
+            <span class="user-role">{{ session.get('role', 'admin') | capitalize }}</span>
+          </div>
+        </div>
       </div>
     </header>
 
-    <!-- Content area -->
+    <!-- Content -->
     <div class="content">
 
-      <!-- KPI cards -->
-      <div class="kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-top">
-            <div class="kpi-icon amber">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.5" stroke="#e8910a" stroke-width="1.4"/><circle cx="9" cy="9" r="6.5" stroke="#e8910a" stroke-width="1" opacity=".4"/></svg>
+      <!-- GPS Tracking panel -->
+      <div class="panel" id="panelGps" style="display:none">
+        <div class="panel-header">
+          <h2 class="panel-title">GPS Tracking — Live Fleet</h2>
+        </div>
+        <div class="panel-body gps-body">
+
+          <!-- Vehicle list sidebar -->
+          <div class="gps-sidebar">
+            <div class="gps-search-row">
+              <input class="gps-search" id="gpsSearch" type="text" placeholder="Search vehicle or driver…" />
             </div>
-            <span class="kpi-trend up">+3.2%</span>
-          </div>
-          <div class="kpi-value">1,240</div>
-          <div class="kpi-label">Active Vehicles</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-top">
-            <div class="kpi-icon green">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 13L5.5 9 8 11.5 11.5 7.5 16 4" stroke="#22c55e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="gps-vehicle-list" id="gpsVehicleList">
+              <div class="gps-loading">Loading vehicles…</div>
             </div>
-            <span class="kpi-trend up">+1.1%</span>
           </div>
-          <div class="kpi-value">98.4<span class="kpi-unit">%</span></div>
-          <div class="kpi-label">Fleet Uptime</div>
-        </div>
 
-        <div class="kpi-card">
-          <div class="kpi-top">
-            <div class="kpi-icon blue">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C5.686 2 3 4.686 3 8c0 2.2 1.2 4.12 3 5.18L9 16l3-2.82C13.8 12.12 15 10.2 15 8c0-3.314-2.686-6-6-6Z" stroke="#3b82f6" stroke-width="1.4"/></svg>
+          <!-- Map + detail -->
+          <div class="gps-map-col">
+            <div id="gpsMap" class="gps-map"></div>
+            <!-- Selected vehicle detail strip -->
+            <div class="gps-detail-strip" id="gpsDetailStrip" style="display:none">
+              <div class="gps-detail-item"><span class="gps-detail-label">Vehicle</span><span class="gps-detail-val" id="gdName">—</span></div>
+              <div class="gps-detail-item"><span class="gps-detail-label">Driver</span><span class="gps-detail-val" id="gdDriver">—</span></div>
+              <div class="gps-detail-item"><span class="gps-detail-label">Speed</span><span class="gps-detail-val" id="gdSpeed">—</span></div>
+              <div class="gps-detail-item"><span class="gps-detail-label">Destination</span><span class="gps-detail-val" id="gdDest">—</span></div>
+              <div class="gps-detail-item"><span class="gps-detail-label">Remaining</span><span class="gps-detail-val" id="gdKm">—</span></div>
+              <div class="gps-detail-item gps-detail-eta"><span class="gps-detail-label">ETA</span><span class="gps-detail-val gps-eta-val" id="gdEta">—</span></div>
             </div>
-            <span class="kpi-trend down">-4.8%</span>
           </div>
-          <div class="kpi-value">22<span class="kpi-unit">%</span></div>
-          <div class="kpi-label">Fuel Savings</div>
+
         </div>
 
-        <div class="kpi-card">
-          <div class="kpi-top">
-            <div class="kpi-icon red">
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#ef4444" stroke-width="1.4"/><path d="M9 5.5V9.5M9 11.5V12" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <span class="kpi-trend down">-2</span>
+        <!-- KPI strip -->
+        <div class="gps-kpi-strip">
+          <div class="gps-kpi-card">
+            <span class="gps-kpi-value" id="kpiTotal">—</span>
+            <span class="gps-kpi-label">Total Vehicles</span>
           </div>
-          <div class="kpi-value">7</div>
-          <div class="kpi-label">Open Alerts</div>
-        </div>
-      </div>
-
-      <!-- Middle row: vehicle table + activity -->
-      <div class="mid-grid">
-
-        <!-- Vehicle status table -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">Vehicle Status</h2>
-            <a href="#" class="card-link">View all</a>
+          <div class="gps-kpi-card gps-kpi-available">
+            <span class="gps-kpi-value" id="kpiAvailable">—</span>
+            <span class="gps-kpi-label">Available for Movement</span>
           </div>
-          <table class="vehicle-table">
-            <thead>
-              <tr>
-                <th>Vehicle</th>
-                <th>Driver</th>
-                <th>Location</th>
-                <th>Speed</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="vehicle-id">#A-1047</td>
-                <td>J. Morrison</td>
-                <td>I-80 East, NE</td>
-                <td>68 mph</td>
-                <td><span class="status-pill green">En Route</span></td>
-              </tr>
-              <tr>
-                <td class="vehicle-id">#B-0392</td>
-                <td>S. Patel</td>
-                <td>Chicago, IL</td>
-                <td>0 mph</td>
-                <td><span class="status-pill blue">Delivered</span></td>
-              </tr>
-              <tr>
-                <td class="vehicle-id">#C-0118</td>
-                <td>R. Chen</td>
-                <td>Denver, CO</td>
-                <td>55 mph</td>
-                <td><span class="status-pill green">En Route</span></td>
-              </tr>
-              <tr>
-                <td class="vehicle-id">#D-2201</td>
-                <td>T. Williams</td>
-                <td>Dallas, TX</td>
-                <td>0 mph</td>
-                <td><span class="status-pill amber">Idle</span></td>
-              </tr>
-              <tr>
-                <td class="vehicle-id">#E-0774</td>
-                <td>M. Garcia</td>
-                <td>Phoenix, AZ</td>
-                <td>—</td>
-                <td><span class="status-pill red">Alert</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Recent activity -->
-        <div class="card">
-          <div class="card-header">
-            <h2 class="card-title">Recent Activity</h2>
-            <a href="#" class="card-link">View all</a>
+          <div class="gps-kpi-card gps-kpi-arrived">
+            <span class="gps-kpi-value" id="kpiArrived">—</span>
+            <span class="gps-kpi-label">Reached Warehouse</span>
           </div>
-          <ul class="activity-list">
-            <li class="activity-item">
-              <div class="activity-icon red">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M6 3.5V6.5M6 8V8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-              </div>
-              <div class="activity-body">
-                <span class="activity-text">Engine alert — Truck #E-0774</span>
-                <span class="activity-time">2 min ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-icon green">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div class="activity-body">
-                <span class="activity-text">Delivery confirmed — #B-0392 Chicago</span>
-                <span class="activity-time">18 min ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-icon amber">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="2" stroke="currentColor" stroke-width="1.3"/><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1" opacity=".4"/></svg>
-              </div>
-              <div class="activity-body">
-                <span class="activity-text">Geofence exit — Truck #D-2201 Dallas</span>
-                <span class="activity-time">34 min ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-icon blue">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1.5" y="2" width="9" height="8" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 2V1M8 2V1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M3 5h6M3 7h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-              </div>
-              <div class="activity-body">
-                <span class="activity-text">DVIR submitted — Truck #C-0118</span>
-                <span class="activity-time">1 hr ago</span>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="activity-icon green">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div class="activity-body">
-                <span class="activity-text">Load assigned — #A-1047 to Omaha NE</span>
-                <span class="activity-time">2 hr ago</span>
-              </div>
-            </li>
-          </ul>
+          <div class="gps-kpi-card gps-kpi-maintenance">
+            <span class="gps-kpi-value" id="kpiMaintenance">—</span>
+            <span class="gps-kpi-label">On Maintenance</span>
+          </div>
         </div>
 
       </div>
 
-      <!-- Bottom row: maintenance alerts -->
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title">Maintenance Alerts</h2>
-          <a href="#" class="card-link">View all</a>
+      <!-- API Auth panel (default view) -->
+      <div class="panel" id="panelApiAuth">
+        <div class="panel-header">
+          <h2 class="panel-title">API Authentication</h2>
         </div>
-        <div class="maint-grid">
-          <div class="maint-card urgent">
-            <div class="maint-card-top">
-              <span class="maint-vehicle">#E-0774</span>
-              <span class="maint-badge red">Urgent</span>
+        <div class="panel-body">
+
+          <!-- Status + user card (full width) -->
+          <div class="auth-info-card">
+            <div class="auth-status-row">
+              <span class="auth-status-dot" id="authStatusDot"></span>
+              <span class="auth-status-text" id="authStatusText">Checking…</span>
+              <span class="auth-expiry-badge" id="authExpiryBadge"></span>
             </div>
-            <div class="maint-issue">Engine fault code P0300</div>
-            <div class="maint-meta">Detected 2 min ago · Phoenix, AZ</div>
-          </div>
-          <div class="maint-card">
-            <div class="maint-card-top">
-              <span class="maint-vehicle">#A-1047</span>
-              <span class="maint-badge amber">14 days</span>
+            <div class="auth-user-row" id="authUserRow">
+              <div class="auth-user-avatar" id="authUserAvatar"></div>
+              <div>
+                <div class="auth-user-name" id="authUserName"></div>
+                <div class="auth-user-role" id="authUserRole"></div>
+              </div>
             </div>
-            <div class="maint-issue">Oil change due at 185,000 mi</div>
-            <div class="maint-meta">Current: 183,240 mi</div>
           </div>
-          <div class="maint-card">
-            <div class="maint-card-top">
-              <span class="maint-vehicle">#D-2201</span>
-              <span class="maint-badge amber">7 days</span>
+
+          <!-- Bearer token card -->
+          <div class="auth-token-card">
+            <p class="setting-label" style="margin-bottom:.75rem">Bearer Token</p>
+            <div class="auth-token-field">
+              <code class="auth-token-code" id="authTokenCode">—</code>
+              <div class="auth-token-btns">
+                <button class="auth-icon-btn" id="authToggleBtn" title="Show / hide full token">
+                  <svg id="eyeOn" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <path d="M1 7.5S3.5 3 7.5 3s6.5 4.5 6.5 4.5-2.5 4.5-6.5 4.5S1 7.5 1 7.5Z" stroke="currentColor" stroke-width="1.3"/>
+                    <circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3"/>
+                  </svg>
+                  <svg id="eyeOff" width="15" height="15" viewBox="0 0 15 15" fill="none" style="display:none">
+                    <path d="M1 7.5S3.5 3 7.5 3s6.5 4.5 6.5 4.5-2.5 4.5-6.5 4.5S1 7.5 1 7.5Z" stroke="currentColor" stroke-width="1.3"/>
+                    <circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3"/>
+                    <line x1="2" y1="2" x2="13" y2="13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                  </svg>
+                </button>
+                <button class="auth-icon-btn" id="authCopyBtn" title="Copy token">
+                  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                    <rect x="5" y="5" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+                    <path d="M3 10H2.5A1.5 1.5 0 0 1 1 8.5v-6A1.5 1.5 0 0 1 2.5 1h6A1.5 1.5 0 0 1 10 2.5V3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
             </div>
-            <div class="maint-issue">Brake inspection overdue</div>
-            <div class="maint-meta">Last service: 62 days ago</div>
+            <p class="auth-copy-confirm" id="authCopyConfirm">Copied to clipboard</p>
           </div>
-          <div class="maint-card">
-            <div class="maint-card-top">
-              <span class="maint-vehicle">#C-0118</span>
-              <span class="maint-badge blue">Scheduled</span>
+
+          <!-- API snippet card -->
+          <div class="auth-snippet-card">
+            <p class="setting-label" style="margin-bottom:.75rem">Use in API Requests</p>
+            <div class="auth-snippet">
+              <code id="authSnippet">Authorization: Bearer &lt;token&gt;</code>
+              <button class="auth-snippet-copy" id="snippetCopyBtn" title="Copy header">Copy</button>
             </div>
-            <div class="maint-issue">Tire rotation — next Tuesday</div>
-            <div class="maint-meta">Shop: Denver Fleet Center</div>
           </div>
+
+          <!-- Actions card (full width) -->
+          <div class="auth-actions-card">
+            <div class="auth-actions">
+              <button class="auth-btn-refresh" id="authRefreshBtn">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M12 7A5 5 0 1 1 7 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M7 2h3.5v3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Refresh Token
+              </button>
+              <span class="auth-refresh-note">Token valid for 8 hours · HS256</span>
+            </div>
+          </div>
+
         </div>
       </div>
 
-    </div><!-- /content -->
-  </div><!-- /main -->
+    </div>
+
+  </div>
+
+  <!-- ══ SETTINGS MODAL ══ -->
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">Settings</h2>
+        <button class="modal-close" id="modalClose" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p class="setting-label">Appearance</p>
+        <div class="theme-options">
+          <button class="theme-btn active" id="themeLight" data-theme="light">
+            <div class="theme-preview light-preview">
+              <div class="preview-sidebar"></div>
+              <div class="preview-content"></div>
+            </div>
+            <span>Light</span>
+          </button>
+          <button class="theme-btn" id="themeDark" data-theme="dark">
+            <div class="theme-preview dark-preview">
+              <div class="preview-sidebar"></div>
+              <div class="preview-content"></div>
+            </div>
+            <span>Dark</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <script>
+    // ── Sidebar toggle ───────────────────────────────────────────────────────
     const sidebar = document.getElementById('sidebar');
-    const toggle  = document.getElementById('sidebarToggle');
-    toggle.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
+    document.getElementById('sidebarToggle').addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+    });
+
+    // ── Theme ────────────────────────────────────────────────────────────────
+    const html = document.documentElement;
+    const saved = localStorage.getItem('af-theme') || 'light';
+    applyTheme(saved);
+
+    function applyTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('af-theme', theme);
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.theme === theme);
+      });
+    }
+
+    document.getElementById('themeLight').addEventListener('click', () => applyTheme('light'));
+    document.getElementById('themeDark').addEventListener('click',  () => applyTheme('dark'));
+
+    // ── Settings modal ───────────────────────────────────────────────────────
+    const backdrop = document.getElementById('modalBackdrop');
+
+    function openModal()  { backdrop.hidden = false; document.body.style.overflow = 'hidden'; }
+    function closeModal() { backdrop.hidden = true;  document.body.style.overflow = ''; }
+
+    document.getElementById('settingsBtn').addEventListener('click', e => {
+      e.preventDefault();
+      openModal();
+    });
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── GPS Tracking ─────────────────────────────────────────────────────────
+    let gpsMap = null;
+    let gpsMarkers = {};
+    let gpsDestMarkers = {};
+    let gpsLines = {};
+    let gpsInterval = null;
+    let selectedVehicle = null;
+
+    const vehicleColors = {
+      "Heavy Truck":   "#f59e0b",
+      "Delivery Van":  "#3b82f6",
+      "Courier Bike":  "#10b981",
+    };
+
+    function makeIcon(type, selected) {
+      const color = vehicleColors[type] || "#6366f1";
+      const size  = selected ? 18 : 14;
+      const svg   = `<svg xmlns="http://www.w3.org/2000/svg" width="${size*2}" height="${size*2}" viewBox="0 0 36 36">
+        <circle cx="18" cy="18" r="14" fill="${color}" opacity="0.25"/>
+        <circle cx="18" cy="18" r="8" fill="${color}"/>
+        <circle cx="18" cy="18" r="4" fill="white"/>
+      </svg>`;
+      return L.divIcon({
+        html: svg,
+        className: '',
+        iconSize: [size*2, size*2],
+        iconAnchor: [size, size],
+      });
+    }
+
+    function destIcon() {
+      return L.divIcon({
+        html: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32">
+          <path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0z" fill="#ef4444"/>
+          <circle cx="12" cy="12" r="5" fill="white"/>
+        </svg>`,
+        className: '',
+        iconSize: [24, 32],
+        iconAnchor: [12, 32],
+      });
+    }
+
+    function initGpsMap() {
+      if (gpsMap) return;
+      gpsMap = L.map('gpsMap').setView([20.5937, 78.9629], 5);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18,
+      }).addTo(gpsMap);
+    }
+
+    function renderVehicleCard(v) {
+      const color  = vehicleColors[v.type] || "#6366f1";
+      const active = selectedVehicle === v.id ? ' gps-card-active' : '';
+      const statusClass = v.status === 'Moving' ? 'gps-status-moving' : 'gps-status-arrived';
+      return `<div class="gps-vehicle-card${active}" data-id="${v.id}">
+        <div class="gps-card-top">
+          <span class="gps-vtype-dot" style="background:${color}"></span>
+          <span class="gps-card-name">${v.name}</span>
+          <span class="gps-card-status ${statusClass}">${v.status}</span>
+        </div>
+        <div class="gps-card-driver">${v.driver} · ${v.type}</div>
+        <div class="gps-card-row">
+          <span class="gps-card-dest">→ ${v.destination}</span>
+          <span class="gps-card-eta">ETA ${v.eta}</span>
+        </div>
+        <div class="gps-card-km">${v.remaining_km} km remaining · ${v.speed_kmh} km/h</div>
+      </div>`;
+    }
+
+    function updateDetailStrip(v) {
+      if (!v) { document.getElementById('gpsDetailStrip').style.display = 'none'; return; }
+      document.getElementById('gpsDetailStrip').style.display = 'flex';
+      document.getElementById('gdName').textContent   = v.name;
+      document.getElementById('gdDriver').textContent = v.driver;
+      document.getElementById('gdSpeed').textContent  = `${v.speed_kmh} km/h`;
+      document.getElementById('gdDest').textContent   = v.destination;
+      document.getElementById('gdKm').textContent     = `${v.remaining_km} km`;
+      document.getElementById('gdEta').textContent    = `${v.eta} (${v.eta_mins} min)`;
+    }
+
+    async function fetchGpsData() {
+      const token = localStorage.getItem('af-token');
+      if (!token) return;
+      try {
+        const res  = await fetch('/api/dashboard/gps', { headers: { 'Authorization': `Bearer ${token}` } });
+        if (!res.ok) return;
+        const data = await res.json();
+        renderGps(data.vehicles);
+      } catch {}
+    }
+
+    function updateKpis(vehicles) {
+      document.getElementById('kpiTotal').textContent       = vehicles.length;
+      document.getElementById('kpiAvailable').textContent   = vehicles.filter(v => v.status === 'Available').length;
+      document.getElementById('kpiArrived').textContent     = vehicles.filter(v => v.status === 'Arrived').length;
+      document.getElementById('kpiMaintenance').textContent = vehicles.filter(v => v.status === 'Maintenance').length;
+    }
+
+    function renderGps(vehicles) {
+      updateKpis(vehicles);
+      // Filter by search
+      const q = document.getElementById('gpsSearch').value.toLowerCase();
+      const filtered = q ? vehicles.filter(v =>
+        v.name.toLowerCase().includes(q) || v.driver.toLowerCase().includes(q)
+      ) : vehicles;
+
+      // Vehicle list
+      document.getElementById('gpsVehicleList').innerHTML = filtered.map(renderVehicleCard).join('');
+      document.querySelectorAll('.gps-vehicle-card').forEach(card => {
+        card.addEventListener('click', () => selectVehicle(card.dataset.id, vehicles));
+      });
+
+      // Map markers
+      vehicles.forEach(v => {
+        const latlng = [v.lat, v.lng];
+        const icon   = makeIcon(v.type, selectedVehicle === v.id);
+
+        if (gpsMarkers[v.id]) {
+          gpsMarkers[v.id].setLatLng(latlng).setIcon(icon);
+        } else {
+          gpsMarkers[v.id] = L.marker(latlng, { icon })
+            .addTo(gpsMap)
+            .on('click', () => selectVehicle(v.id, vehicles));
+        }
+        gpsMarkers[v.id].bindTooltip(`<b>${v.name}</b><br>${v.driver}<br>ETA: ${v.eta}`, { direction: 'top' });
+
+        // Destination marker
+        const destll = [v.dest_lat, v.dest_lng];
+        if (!gpsDestMarkers[v.id]) {
+          gpsDestMarkers[v.id] = L.marker(destll, { icon: destIcon() })
+            .addTo(gpsMap)
+            .bindTooltip(`<b>${v.destination}</b>`, { direction: 'top' });
+        }
+
+        // Route line
+        if (gpsLines[v.id]) {
+          gpsLines[v.id].setLatLngs([latlng, destll]);
+        } else {
+          gpsLines[v.id] = L.polyline([latlng, destll], {
+            color: vehicleColors[v.type] || '#6366f1',
+            weight: 2,
+            dashArray: '6 4',
+            opacity: 0.6,
+          }).addTo(gpsMap);
+        }
+      });
+
+      // Update detail strip for selected vehicle
+      if (selectedVehicle) {
+        const sv = vehicles.find(v => v.id === selectedVehicle);
+        updateDetailStrip(sv || null);
+      }
+    }
+
+    function selectVehicle(vid, vehicles) {
+      selectedVehicle = vid;
+      const v = vehicles.find(x => x.id === vid);
+      if (v) {
+        gpsMap.setView([v.lat, v.lng], 10, { animate: true });
+        updateDetailStrip(v);
+        Object.keys(gpsMarkers).forEach(id => {
+          const vv = vehicles.find(x => x.id === id);
+          if (vv) gpsMarkers[id].setIcon(makeIcon(vv.type, id === vid));
+        });
+      }
+      document.querySelectorAll('.gps-vehicle-card').forEach(card => {
+        card.classList.toggle('gps-card-active', card.dataset.id === vid);
+      });
+    }
+
+    function startGpsTracking() {
+      initGpsMap();
+      fetchGpsData();
+      if (!gpsInterval) gpsInterval = setInterval(fetchGpsData, 10000);
+      setTimeout(() => gpsMap && gpsMap.invalidateSize(), 100);
+    }
+
+    function stopGpsTracking() {
+      clearInterval(gpsInterval);
+      gpsInterval = null;
+    }
+
+    document.getElementById('gpsBtn').addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      document.getElementById('panelGps').style.display   = '';
+      document.getElementById('panelApiAuth').style.display = 'none';
+      startGpsTracking();
+    });
+
+    document.getElementById('gpsSearch').addEventListener('input', fetchGpsData);
+
+    // ── API Auth panel ───────────────────────────────────────────────────────
+    let tokenVisible = false;
+
+    function parseJwt(t) {
+      try { return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); }
+      catch { return null; }
+    }
+
+    function renderApiAuth() {
+      const token   = localStorage.getItem('af-token');
+      const userRaw = localStorage.getItem('af-user');
+      const user    = userRaw ? JSON.parse(userRaw) : {};
+
+      const dot    = document.getElementById('authStatusDot');
+      const txt    = document.getElementById('authStatusText');
+      const badge  = document.getElementById('authExpiryBadge');
+      const code   = document.getElementById('authTokenCode');
+      const snip   = document.getElementById('authSnippet');
+      const avatar = document.getElementById('authUserAvatar');
+      const uname  = document.getElementById('authUserName');
+      const urole  = document.getElementById('authUserRole');
+
+      if (!token) {
+        dot.className = 'auth-status-dot dot-error';
+        txt.textContent = 'No token — sign in again';
+        badge.textContent = '';
+        code.textContent = '—';
+        return;
+      }
+
+      const payload = parseJwt(token);
+      const mins    = payload ? Math.max(0, Math.round((payload.exp * 1000 - Date.now()) / 60000)) : 0;
+      const expired = mins === 0;
+
+      dot.className  = expired ? 'auth-status-dot dot-error' : 'auth-status-dot dot-ok';
+      txt.textContent = expired ? 'Token expired' : 'Token active';
+      badge.textContent = expired ? 'EXPIRED' : `Expires in ${mins} min`;
+      badge.className = expired ? 'auth-expiry-badge badge-error' : mins < 30 ? 'auth-expiry-badge badge-warn' : 'auth-expiry-badge badge-ok';
+
+      const masked = token.slice(0, 24) + '…' + token.slice(-12);
+      code.textContent = tokenVisible ? token : masked;
+      snip.textContent = `Authorization: Bearer ${masked}`;
+
+      if (payload) {
+        avatar.textContent = (payload.name || payload.sub || '?')[0].toUpperCase();
+        uname.textContent  = payload.name || payload.sub;
+        urole.textContent  = payload.role ? payload.role.charAt(0).toUpperCase() + payload.role.slice(1) : '';
+      }
+    }
+
+    document.getElementById('apiAuthBtn').addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+      document.getElementById('panelGps').style.display    = 'none';
+      document.getElementById('panelApiAuth').style.display = '';
+      stopGpsTracking();
+      renderApiAuth();
+    });
+
+    // Render API Auth on page load
+    document.getElementById('apiAuthBtn').classList.add('active');
+    renderApiAuth();
+
+    // Show/hide full token
+    document.getElementById('authToggleBtn').addEventListener('click', () => {
+      tokenVisible = !tokenVisible;
+      document.getElementById('eyeOn').style.display  = tokenVisible ? 'none'  : 'block';
+      document.getElementById('eyeOff').style.display = tokenVisible ? 'block' : 'none';
+      renderApiAuth();
+    });
+
+    // Copy token
+    document.getElementById('authCopyBtn').addEventListener('click', () => {
+      const token = localStorage.getItem('af-token');
+      if (!token) return;
+      navigator.clipboard.writeText(token).then(() => {
+        const el = document.getElementById('authCopyConfirm');
+        el.classList.add('show');
+        setTimeout(() => el.classList.remove('show'), 2000);
+      });
+    });
+
+    // Copy header snippet
+    document.getElementById('snippetCopyBtn').addEventListener('click', () => {
+      const token = localStorage.getItem('af-token');
+      if (!token) return;
+      navigator.clipboard.writeText(`Authorization: Bearer ${token}`).then(() => {
+        const btn = document.getElementById('snippetCopyBtn');
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    });
+
+    // Refresh token
+    document.getElementById('authRefreshBtn').addEventListener('click', async () => {
+      const user = JSON.parse(localStorage.getItem('af-user') || '{}');
+      const btn  = document.getElementById('authRefreshBtn');
+      btn.textContent = 'Refreshing…';
+      btn.disabled    = true;
+      try {
+        const res  = await fetch('/api/auth/login', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ username: user.username || '', password: '' }),
+        });
+        const data = await res.json();
+        if (data.token) { localStorage.setItem('af-token', data.token); renderApiAuth(); }
+        else { document.getElementById('authStatusText').textContent = 'Re-enter password to refresh'; }
+      } catch { document.getElementById('authStatusText').textContent = 'Refresh failed'; }
+      finally { btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7A5 5 0 1 1 7 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M7 2h3.5v3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Refresh Token'; btn.disabled = false; }
+    });
   </script>
 
 </body>
